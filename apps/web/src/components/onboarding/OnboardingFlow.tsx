@@ -1,0 +1,254 @@
+/**
+ * OnboardingFlow — Multi-step onboarding wizard controller.
+ *
+ * Manages step navigation and answer collection across four
+ * onboarding questions (use case, call volume, tone, audience).
+ * On completion, passes the collected answers to the parent via
+ * the onComplete callback.
+ */
+
+import { useState, useCallback } from "react";
+import type { IOnboardingAnswers, IOnboardingOption } from "@worktf/shared";
+import { Button } from "@components/ui";
+import ProgressBar from "./ProgressBar";
+import QuestionCard from "./QuestionCard";
+
+// ─── Question definitions ───────────────────────────────────────────
+
+interface QuestionDef {
+  id: keyof IOnboardingAnswers;
+  title: string;
+  subtitle: string;
+  options: IOnboardingOption[];
+}
+
+const QUESTIONS: QuestionDef[] = [
+  {
+    id: "useCase",
+    title: "What is your primary use case?",
+    subtitle:
+      "Select the option that best describes your immediate need to help us configure your AI.",
+    options: [
+      {
+        value: "LEAD_QUALIFICATION",
+        icon: "person_search",
+        label: "Lead Qualification",
+        desc: "Automatically vet inbound inquiries and capture essential prospect data.",
+      },
+      {
+        value: "APPOINTMENT_BOOKING",
+        icon: "event_available",
+        label: "Appointment Booking",
+        desc: "Schedule meetings seamlessly integrated with your team's calendar.",
+      },
+      {
+        value: "CUSTOMER_SUPPORT",
+        icon: "support_agent",
+        label: "Customer Support",
+        desc: "Handle tier-1 queries, troubleshoot common issues, and route complex cases.",
+      },
+      {
+        value: "OUTBOUND_SALES",
+        icon: "outgoing_mail",
+        label: "Outbound Sales",
+        desc: "Initiate proactive outreach campaigns and gauge initial prospect interest.",
+      },
+    ],
+  },
+  {
+    id: "callVolume",
+    title: "What's your expected call volume?",
+    subtitle:
+      "This helps us allocate the right resources for your agent.",
+    options: [
+      {
+        value: "LOW",
+        icon: "signal_cellular_1_bar",
+        label: "Low (< 50/day)",
+        desc: "Just getting started or testing the waters.",
+      },
+      {
+        value: "MEDIUM",
+        icon: "signal_cellular_2_bar",
+        label: "Medium (50–200/day)",
+        desc: "Growing team with consistent outreach needs.",
+      },
+      {
+        value: "HIGH",
+        icon: "signal_cellular_3_bar",
+        label: "High (200–500/day)",
+        desc: "Established sales or support operations.",
+      },
+      {
+        value: "ENTERPRISE",
+        icon: "signal_cellular_4_bar",
+        label: "Enterprise (500+/day)",
+        desc: "Large-scale deployment across multiple teams.",
+      },
+    ],
+  },
+  {
+    id: "agentTone",
+    title: "What tone should your AI agent use?",
+    subtitle:
+      "Choose the voice personality that best represents your brand.",
+    options: [
+      {
+        value: "PROFESSIONAL",
+        icon: "business_center",
+        label: "Professional",
+        desc: "Formal, precise, and corporate. Ideal for B2B and enterprise.",
+      },
+      {
+        value: "FRIENDLY",
+        icon: "sentiment_very_satisfied",
+        label: "Friendly",
+        desc: "Warm, approachable, and conversational. Great for consumer brands.",
+      },
+      {
+        value: "PERSUASIVE",
+        icon: "auto_awesome",
+        label: "Persuasive",
+        desc: "Confident and compelling. Optimized for sales conversion.",
+      },
+      {
+        value: "NEUTRAL",
+        icon: "balance",
+        label: "Neutral",
+        desc: "Balanced and adaptable. Works well across any context.",
+      },
+    ],
+  },
+  {
+    id: "audienceType",
+    title: "Who are you primarily calling?",
+    subtitle:
+      "Understanding your audience helps us tailor the conversation scripts.",
+    options: [
+      {
+        value: "COLD",
+        icon: "person_off",
+        label: "Cold Leads",
+        desc: "Contacts with no prior interaction with your brand.",
+      },
+      {
+        value: "WARM",
+        icon: "local_fire_department",
+        label: "Warm Leads",
+        desc: "Prospects who have shown some interest or engagement.",
+      },
+      {
+        value: "EXISTING",
+        icon: "group",
+        label: "Existing Customers",
+        desc: "Current clients for upsell, renewal, or support follow-ups.",
+      },
+      {
+        value: "MIXED",
+        icon: "shuffle",
+        label: "Mixed Audience",
+        desc: "A blend of cold, warm, and existing contacts.",
+      },
+    ],
+  },
+];
+
+// ─── Component ──────────────────────────────────────────────────────
+
+interface OnboardingFlowProps {
+  onComplete: (answers: IOnboardingAnswers) => void;
+}
+
+export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<Partial<IOnboardingAnswers>>({});
+
+  const currentQuestion = QUESTIONS[step];
+  const isLastStep = step === QUESTIONS.length - 1;
+  const currentAnswer = answers[currentQuestion.id] as string | undefined;
+
+  /** Go to previous step (minimum 0) */
+  const handleBack = useCallback(() => {
+    setStep((s) => Math.max(0, s - 1));
+  }, []);
+
+  /** Store the selected value for the current question */
+  const handleSelect = useCallback(
+    (value: string) => {
+      setAnswers((prev) => ({ ...prev, [currentQuestion.id]: value }));
+    },
+    [currentQuestion.id],
+  );
+
+  /** Advance to next step or complete the flow */
+  const handleContinue = useCallback(() => {
+    if (isLastStep) {
+      onComplete(answers as IOnboardingAnswers);
+    } else {
+      setStep((s) => s + 1);
+    }
+  }, [isLastStep, answers, onComplete]);
+
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "var(--background)",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* ── Progress bar ───────────────────────────── */}
+      <ProgressBar
+        currentStep={step + 1}
+        totalSteps={QUESTIONS.length}
+        onBack={handleBack}
+      />
+
+      {/* ── Scrollable content area ────────────────── */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "24px 16px 140px",
+        }}
+      >
+        <QuestionCard
+          title={currentQuestion.title}
+          subtitle={currentQuestion.subtitle}
+          options={currentQuestion.options}
+          selectedValue={currentAnswer}
+          onSelect={handleSelect}
+        />
+      </div>
+
+      {/* ── Fixed bottom CTA ───────────────────────── */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          padding: "24px 16px 32px",
+          background:
+            "linear-gradient(to top, var(--background) 70%, transparent)",
+          display: "flex",
+          justifyContent: "center",
+          zIndex: 10,
+        }}
+      >
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
+          iconAfter="arrow_forward"
+          disabled={!currentAnswer}
+          onClick={handleContinue}
+          style={{ maxWidth: 480, borderRadius: "999px" }}
+        >
+          {isLastStep ? "Launch My Agent" : "Continue"}
+        </Button>
+      </div>
+    </div>
+  );
+}

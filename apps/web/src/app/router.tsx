@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { LandingPage } from "@components/landing";
+import { OnboardingFlow } from "@components/onboarding";
 
 /**
  * Application router.
  *
- * The "/" route renders the full landing page.
- * Onboarding and dashboard are placeholders until later phases.
+ * "/" renders the landing page, "/onboarding" the wizard flow.
+ * Dashboard is a placeholder until a later phase.
  */
 export function AppRouter() {
   return (
@@ -28,11 +29,20 @@ function AppRoutes() {
       />
 
       {/* Post-signup onboarding flow */}
-      <Route path="/onboarding" element={<div>Onboarding</div>} />
+      <Route
+        path="/onboarding"
+        element={
+          <OnboardingFlow
+            onComplete={(answers) => {
+              console.log("Onboarding complete:", answers);
+              navigate("/dashboard");
+            }}
+          />
+        }
+      />
 
       {/* Authenticated dashboard */}
       <Route path="/dashboard" element={<div>Dashboard</div>} />
     </Routes>
   );
 }
-
