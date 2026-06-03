@@ -1,11 +1,13 @@
+/**
+ * App — Root application component.
+ *
+ * Renders the application router. All routing logic,
+ * layout wrapping, and page components are defined in router.tsx.
+ * Global styles are imported in main.tsx.
+ */
+
 import { AppRouter } from "./app/router";
 
-/**
- * Root application component.
- * Delegates all routing to the AppRouter — no logic here yet.
- */
-function App() {
+export default function App() {
   return <AppRouter />;
 }
-
-export default App;

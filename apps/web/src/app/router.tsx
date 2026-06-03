@@ -1,13 +1,19 @@
 /**
  * Application router — all routes for WorkTF AI web app.
  *
- * Public routes: "/" (landing), "/onboarding" (wizard).
- * Authenticated routes wrapped in AppLayout:
- * "/dashboard", "/dashboard/active-call", "/dashboard/call-logs",
- * "/dashboard/agent-config", "/dashboard/settings".
+ * Uses nested routing with an Outlet-based DashboardLayout
+ * that wraps all /dashboard/* routes in the AppLayout shell.
+ * The useActivePage hook syncs the sidebar highlight with the URL.
  */
 
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
+
 import { LandingPage } from "@components/landing";
 import { OnboardingFlow } from "@components/onboarding";
 import { DashboardPage } from "@components/dashboard";
@@ -16,6 +22,9 @@ import { CallLogsPage } from "@components/call-logs";
 import { AgentConfigPage } from "@components/agent-config";
 import { SettingsPage } from "@components/settings";
 import AppLayout from "@components/layout/AppLayout";
+import { useActivePage } from "@hooks/useActivePage";
+
+// ─── Router entry ───────────────────────────────────────────────────
 
 export function AppRouter() {
   return (
@@ -25,7 +34,8 @@ export function AppRouter() {
   );
 }
 
-/** Inner routes — must be inside BrowserRouter to use hooks. */
+// ─── Route definitions ──────────────────────────────────────────────
+
 function AppRoutes() {
   const navigate = useNavigate();
 
@@ -48,75 +58,44 @@ function AppRoutes() {
         }
       />
 
-      {/* ── Dashboard routes (inside AppLayout) ───── */}
-      <Route
-        path="/dashboard"
-        element={
-          <DashboardLayout>
+      {/* ── Dashboard routes (nested inside AppLayout) ── */}
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route
+          index
+          element={
             <DashboardPage
               onStartCall={() => navigate("/dashboard/active-call")}
               onViewAllCalls={() => navigate("/dashboard/call-logs")}
               onManageAgent={() => navigate("/dashboard/agent-config")}
             />
-          </DashboardLayout>
-        }
-      />
-      <Route
-        path="/dashboard/active-call"
-        element={
-          <DashboardLayout>
+          }
+        />
+        <Route
+          path="active-call"
+          element={
             <ActiveCallPage onEndCall={() => navigate("/dashboard")} />
-          </DashboardLayout>
-        }
-      />
-      <Route
-        path="/dashboard/call-logs"
-        element={
-          <DashboardLayout>
-            <CallLogsPage />
-          </DashboardLayout>
-        }
-      />
-      <Route
-        path="/dashboard/agent-config"
-        element={
-          <DashboardLayout>
-            <AgentConfigPage />
-          </DashboardLayout>
-        }
-      />
-      <Route
-        path="/dashboard/settings"
-        element={
-          <DashboardLayout>
-            <SettingsPage />
-          </DashboardLayout>
-        }
-      />
+          }
+        />
+        <Route path="call-logs" element={<CallLogsPage />} />
+        <Route path="agent-config" element={<AgentConfigPage />} />
+        <Route path="settings" element={<SettingsPage />} />
+      </Route>
     </Routes>
   );
 }
 
-/**
- * DashboardLayout — Wraps children in AppLayout with navigation.
- * Derives activePage from the current URL path segment.
- */
-function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
-  const location = useLocation();
+// ─── Dashboard layout wrapper ───────────────────────────────────────
 
-  /** Extract active page from path: "/dashboard/call-logs" → "call-logs" */
-  const segments = location.pathname.split("/").filter(Boolean);
-  const activePage = segments[1] ?? "dashboard";
+/**
+ * DashboardLayout — Wraps child routes in AppLayout with
+ * sidebar navigation synced to the URL via useActivePage.
+ */
+function DashboardLayout() {
+  const { activePage, navigate } = useActivePage();
 
   return (
-    <AppLayout
-      activePage={activePage}
-      onNavigate={(page) =>
-        navigate(page === "dashboard" ? "/dashboard" : `/dashboard/${page}`)
-      }
-    >
-      {children}
+    <AppLayout activePage={activePage} onNavigate={navigate}>
+      <Outlet />
     </AppLayout>
   );
 }
