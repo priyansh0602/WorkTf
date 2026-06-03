@@ -1,0 +1,16 @@
+{
+  "name": "@worktf/config",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/tailwind.config.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

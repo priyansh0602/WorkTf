@@ -1,0 +1,54 @@
+/**
+ * WorkTF AI — Design Tokens
+ *
+ * Central source of truth for every color in the design system.
+ * All values follow a Material-inspired surface / primary / error palette.
+ * Tailwind classes reference these properties via packages/config/src/tailwind.config.ts.
+ */
+
+:root {
+  /* ── Surface ──────────────────────────────────── */
+  --surface: #f8f9ff;
+  --surface-dim: #cbdbf5;
+  --surface-bright: #f8f9ff;
+  --surface-lowest: #ffffff;
+  --surface-low: #eff4ff;
+  --surface-container: #e5eeff;
+  --surface-high: #dce9ff;
+  --surface-highest: #d3e4fe;
+
+  /* ── On Surface ───────────────────────────────── */
+  --on-surface: #0b1c30;
+  --on-surface-variant: #424754;
+
+  /* ── Inverse Surface ──────────────────────────── */
+  --inverse-surface: #213145;
+  --inverse-on-surface: #eaf1ff;
+
+  /* ── Outline ──────────────────────────────────── */
+  --outline: #727785;
+  --outline-variant: #c2c6d6;
+
+  /* ── Primary ──────────────────────────────────── */
+  --primary: #0058be;
+  --on-primary: #ffffff;
+  --primary-container: #2170e4;
+  --on-primary-container: #fefcff;
+  --primary-fixed: #d8e2ff;
+  --primary-fixed-dim: #adc6ff;
+
+  /* ── Secondary ────────────────────────────────── */
+  --secondary: #565e74;
+  --secondary-container: #dae2fd;
+  --on-secondary-container: #5c647a;
+
+  /* ── Error ────────────────────────────────────── */
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+
+  /* ── Background & Tint ────────────────────────── */
+  --background: #f8f9ff;
+  --surface-tint: #005ac2;
+}
