@@ -1,24 +1,38 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { LandingPage } from "@components/landing";
 
 /**
  * Application router.
  *
- * Placeholder routes for the three top-level pages.
- * These will be replaced with real components in later phases.
+ * The "/" route renders the full landing page.
+ * Onboarding and dashboard are placeholders until later phases.
  */
 export function AppRouter() {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Public landing page */}
-        <Route path="/" element={<div>Landing</div>} />
-
-        {/* Post-signup onboarding flow */}
-        <Route path="/onboarding" element={<div>Onboarding</div>} />
-
-        {/* Authenticated dashboard */}
-        <Route path="/dashboard" element={<div>Dashboard</div>} />
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
   );
 }
+
+/** Inner routes — must be inside BrowserRouter to use useNavigate. */
+function AppRoutes() {
+  const navigate = useNavigate();
+
+  return (
+    <Routes>
+      {/* Public landing page */}
+      <Route
+        path="/"
+        element={<LandingPage onGetStarted={() => navigate("/onboarding")} />}
+      />
+
+      {/* Post-signup onboarding flow */}
+      <Route path="/onboarding" element={<div>Onboarding</div>} />
+
+      {/* Authenticated dashboard */}
+      <Route path="/dashboard" element={<div>Dashboard</div>} />
+    </Routes>
+  );
+}
+
