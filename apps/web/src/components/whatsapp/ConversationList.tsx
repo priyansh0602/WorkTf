@@ -76,6 +76,7 @@ export default function ConversationList({
                 fontSize: "16px",
                 fontWeight: 600,
                 color: "var(--on-surface)",
+                lineHeight: 1,
               }}
             >
               Conversations
@@ -104,7 +105,7 @@ export default function ConversationList({
         </div>
 
         {/* Filter tabs */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "16px", borderBottom: "1px solid var(--outline-variant)", padding: "0 16px" }}>
+        <div style={{ display: "flex", width: "100%", borderBottom: "1px solid var(--outline-variant)", padding: "0" }}>
           {FILTERS.map((f) => (
             <FilterTab
               key={f}
@@ -183,10 +184,11 @@ function FilterTab({
       type="button"
       onClick={onClick}
       style={{
+        flex: 1,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "12px 16px",
+        padding: "12px 0",
         border: "none",
         borderBottom: isActive ? "2px solid var(--primary)" : "2px solid transparent",
         background: "transparent",
