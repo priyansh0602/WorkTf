@@ -55,10 +55,11 @@ export default function ConversationList({
         display: "flex",
         flexDirection: "column",
         height: "100%",
+        overflow: "hidden",
       }}
     >
       {/* Header */}
-      <div style={{ padding: "16px" }}>
+      <div style={{ padding: "16px", flexShrink: 0 }}>
         <div
           style={{
             display: "flex",
@@ -95,12 +96,12 @@ export default function ConversationList({
       </div>
 
       {/* Search */}
-      <div style={{ padding: "0 16px 12px" }}>
+      <div style={{ padding: "0 16px 12px", flexShrink: 0 }}>
         <SearchBar value={search} onChange={setSearch} />
       </div>
 
       {/* Filter tabs */}
-      <div style={{ padding: "0 16px 12px", display: "flex", gap: "8px" }}>
+      <div style={{ padding: "0 16px 12px", display: "flex", gap: "8px", flexShrink: 0 }}>
         {FILTERS.map((f) => (
           <FilterPill
             key={f}

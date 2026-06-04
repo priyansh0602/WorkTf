@@ -103,7 +103,7 @@ export default function EmailPage() {
     : [];
 
   return (
-    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
       {/* Page header */}
       <div
         style={{
@@ -111,6 +111,7 @@ export default function EmailPage() {
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "20px",
+          flexShrink: 0,
         }}
       >
         <div>
@@ -163,7 +164,7 @@ export default function EmailPage() {
       </Modal>
 
       {/* Main content: split panel */}
-      <Card padding={0} style={{ overflow: "hidden", display: "flex", height: "calc(100vh - 220px)" }}>
+      <Card padding={0} style={{ overflow: "hidden", display: "flex", flex: 1 }}>
         <ConversationList
           conversations={MOCK_CONVERSATIONS}
           activeId={activeConversation?.id}

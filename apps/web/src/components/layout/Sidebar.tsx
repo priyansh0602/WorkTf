@@ -57,7 +57,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
       flexDirection: "column",
       padding: "16px",
       zIndex: 40,
-      overflowY: "auto",
+      overflow: "hidden",
     }}>
       {/* 1. LOGO AREA */}
       <div style={{
@@ -100,7 +100,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
       </div>
 
       {/* 3. NAVIGATION LINKS */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "2px", flex: 1 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "2px", flex: 1, overflowY: "auto" }}>
         {SIDEBAR_ENTRIES.map((entry, index) => {
           if (entry.type === "divider") {
             return (

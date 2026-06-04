@@ -121,7 +121,7 @@ export default function DashboardPage({
   onManageAgent,
 }: DashboardPageProps) {
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {/* ── Page header ────────────────────────────── */}
       <div
         style={{
@@ -129,6 +129,7 @@ export default function DashboardPage({
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "28px",
+          flexShrink: 0,
         }}
       >
         <div>
@@ -160,129 +161,132 @@ export default function DashboardPage({
         </Button>
       </div>
 
-      {/* ── Agent status ───────────────────────────── */}
-      <AgentStatusCard
-        isActive={true}
-        concurrentCalls={3}
-        onManage={onManageAgent}
-      />
+      {/* ── Scrollable Content Wrapper ──────────────── */}
+      <div style={{ flex: 1, overflowY: "auto", paddingRight: "4px" }}>
+        {/* ── Agent status ───────────────────────────── */}
+        <AgentStatusCard
+          isActive={true}
+          concurrentCalls={3}
+          onManage={onManageAgent}
+        />
 
-      {/* ── Metrics grid ───────────────────────────── */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(5, 1fr)",
-          gap: "12px",
-          marginBottom: "24px",
-        }}
-      >
-        <MetricCard
-          label="TOTAL CALLS"
-          value="1,284"
-          delta="+12% this week"
-          icon="call"
-          color="var(--primary)"
-        />
-        <MetricCard
-          label="LIVE NOW"
-          value="3"
-          delta="Active"
-          icon="fiber_manual_record"
-          color="#16a34a"
-          live
-        />
-        <MetricCard
-          label="ANSWERED"
-          value="1,101"
-          delta="85.7% answer rate"
-          icon="call_received"
-          color="var(--primary)"
-        />
-        <MetricCard
-          label="MISSED"
-          value="183"
-          delta="14.3% miss rate"
-          icon="call_missed"
-          color="var(--on-error-container)"
-        />
-        <MetricCard
-          label="CONVERSION"
-          value="24%"
-          delta="+2.4% vs last week"
-          icon="trending_up"
-          color="#c2410c"
-        />
-      </div>
-
-      {/* ── Active channels ────────────────────────── */}
-      <div style={{ marginBottom: "24px" }}>
-        <h2
-          style={{
-            fontFamily: "'Geist', sans-serif",
-            fontSize: "16px",
-            fontWeight: 600,
-            color: "var(--on-surface)",
-            marginBottom: "12px",
-            marginTop: 0,
-          }}
-        >
-          Active Channels
-        </h2>
+        {/* ── Metrics grid ───────────────────────────── */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateColumns: "repeat(5, 1fr)",
             gap: "12px",
+            marginBottom: "24px",
           }}
         >
-          {CHANNELS.map((ch) => (
-            <Card key={ch.label} padding={16}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "8px",
-                }}
-              >
+          <MetricCard
+            label="TOTAL CALLS"
+            value="1,284"
+            delta="+12% this week"
+            icon="call"
+            color="var(--primary)"
+          />
+          <MetricCard
+            label="LIVE NOW"
+            value="3"
+            delta="Active"
+            icon="fiber_manual_record"
+            color="#16a34a"
+            live
+          />
+          <MetricCard
+            label="ANSWERED"
+            value="1,101"
+            delta="85.7% answer rate"
+            icon="call_received"
+            color="var(--primary)"
+          />
+          <MetricCard
+            label="MISSED"
+            value="183"
+            delta="14.3% miss rate"
+            icon="call_missed"
+            color="var(--on-error-container)"
+          />
+          <MetricCard
+            label="CONVERSION"
+            value="24%"
+            delta="+2.4% vs last week"
+            icon="trending_up"
+            color="#c2410c"
+          />
+        </div>
+
+        {/* ── Active channels ────────────────────────── */}
+        <div style={{ marginBottom: "24px" }}>
+          <h2
+            style={{
+              fontFamily: "'Geist', sans-serif",
+              fontSize: "16px",
+              fontWeight: 600,
+              color: "var(--on-surface)",
+              marginBottom: "12px",
+              marginTop: 0,
+            }}
+          >
+            Active Channels
+          </h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "12px",
+            }}
+          >
+            {CHANNELS.map((ch) => (
+              <Card key={ch.label} padding={16}>
                 <div
                   style={{
                     display: "flex",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    gap: "8px",
+                    marginBottom: "8px",
                   }}
                 >
-                  <Icon name={ch.icon} size={18} color="var(--on-surface)" />
-                  <span
+                  <div
                     style={{
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      color: "var(--on-surface)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
                     }}
                   >
-                    {ch.label}
-                  </span>
+                    <Icon name={ch.icon} size={18} color="var(--on-surface)" />
+                    <span
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        color: "var(--on-surface)",
+                      }}
+                    >
+                      {ch.label}
+                    </span>
+                  </div>
+                  <Badge
+                    label={ch.active ? "Active" : "Inactive"}
+                    color={ch.active ? "green" : "gray"}
+                  />
                 </div>
-                <Badge
-                  label={ch.active ? "Active" : "Inactive"}
-                  color={ch.active ? "green" : "gray"}
-                />
-              </div>
-              <div
-                style={{
-                  fontSize: "13px",
-                  color: "var(--on-surface-variant)",
-                }}
-              >
-                {ch.stat}
-              </div>
-            </Card>
-          ))}
+                <div
+                  style={{
+                    fontSize: "13px",
+                    color: "var(--on-surface-variant)",
+                  }}
+                >
+                  {ch.stat}
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* ── Recent calls table ─────────────────────── */}
-      <RecentCallsTable calls={MOCK_CALLS} onViewAll={onViewAllCalls} />
+        {/* ── Recent calls table ─────────────────────── */}
+        <RecentCallsTable calls={MOCK_CALLS} onViewAll={onViewAllCalls} />
+      </div>
     </div>
   );
 }

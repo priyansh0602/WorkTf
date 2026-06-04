@@ -67,6 +67,7 @@ export default function ConversationView({
         display: "flex",
         flexDirection: "column",
         height: "100%",
+        overflow: "hidden",
       }}
     >
       {/* Header */}
@@ -77,6 +78,7 @@ export default function ConversationView({
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          flexShrink: 0,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -155,6 +157,7 @@ export default function ConversationView({
           display: "flex",
           alignItems: "center",
           gap: "8px",
+          flexShrink: 0,
         }}
       >
         <div
@@ -184,6 +187,7 @@ export default function ConversationView({
           display: "flex",
           gap: "8px",
           alignItems: "flex-end",
+          flexShrink: 0,
         }}
       >
         <textarea

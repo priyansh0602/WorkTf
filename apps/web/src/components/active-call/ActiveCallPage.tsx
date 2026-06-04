@@ -34,7 +34,7 @@ export default function ActiveCallPage({
   const lastName = nameParts.slice(1).join(" ");
 
   return (
-    <div className="animate-fade-in" style={{ maxWidth: 520, margin: "0 auto" }}>
+    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {/* Page title */}
       <h1
         style={{
@@ -44,167 +44,173 @@ export default function ActiveCallPage({
           color: "var(--on-surface)",
           marginBottom: "24px",
           marginTop: 0,
+          flexShrink: 0,
+          width: "100%",
+          maxWidth: "520px",
+          margin: "0 auto 24px",
         }}
       >
         Active Call
       </h1>
 
-      <Card padding={32} style={{ textAlign: "center" }}>
-        {/* ── Status pill ──────────────────────────── */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "24px",
-          }}
-        >
+      <div style={{ flex: 1, overflowY: "auto", maxWidth: "520px", margin: "0 auto", width: "100%" }}>
+        <Card padding={32} style={{ textAlign: "center" }}>
+          {/* ── Status pill ──────────────────────────── */}
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              background: "var(--surface-container)",
-              borderRadius: "999px",
-              padding: "6px 16px",
-              border: "1px solid var(--outline-variant)",
+              justifyContent: "center",
+              marginBottom: "24px",
             }}
           >
-            {/* Pulse indicator */}
             <div
               style={{
-                position: "relative",
-                width: "10px",
-                height: "10px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
+                gap: "8px",
+                background: "var(--surface-container)",
+                borderRadius: "999px",
+                padding: "6px 16px",
+                border: "1px solid var(--outline-variant)",
               }}
             >
-              <div
-                className="animate-pulse-ring"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "var(--primary)",
-                  borderRadius: "50%",
-                  opacity: 0.6,
-                }}
-              />
+              {/* Pulse indicator */}
               <div
                 style={{
                   position: "relative",
-                  width: "6px",
-                  height: "6px",
-                  background: "var(--primary)",
-                  borderRadius: "50%",
+                  width: "10px",
+                  height: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
+              >
+                <div
+                  className="animate-pulse-ring"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: "var(--primary)",
+                    borderRadius: "50%",
+                    opacity: 0.6,
+                  }}
+                />
+                <div
+                  style={{
+                    position: "relative",
+                    width: "6px",
+                    height: "6px",
+                    background: "var(--primary)",
+                    borderRadius: "50%",
+                  }}
+                />
+              </div>
+              <span
+                style={{
+                  fontFamily: "'Geist', sans-serif",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "var(--primary)",
+                }}
+              >
+                Active AI Core
+              </span>
             </div>
-            <span
-              style={{
-                fontFamily: "'Geist', sans-serif",
-                fontSize: "13px",
-                fontWeight: 500,
-                color: "var(--primary)",
-              }}
-            >
-              Active AI Core
-            </span>
-          </div>
-        </div>
-
-        {/* ── Contact avatar ───────────────────────── */}
-        <div style={{ margin: "0 auto 12px", width: "fit-content" }}>
-          <Avatar firstName={firstName} lastName={lastName} size="xl" />
-        </div>
-
-        {/* ── Contact name ─────────────────────────── */}
-        <div
-          style={{
-            fontFamily: "'Geist', sans-serif",
-            fontSize: "24px",
-            fontWeight: 600,
-            color: "var(--on-surface)",
-            marginBottom: "4px",
-          }}
-        >
-          {contactName}
-        </div>
-
-        {/* ── Contact number ───────────────────────── */}
-        <div
-          style={{
-            fontSize: "16px",
-            color: "var(--on-surface-variant)",
-            marginBottom: "32px",
-          }}
-        >
-          {contactNumber}
-        </div>
-
-        {/* ── Waveform container ───────────────────── */}
-        <div
-          style={{
-            background: "var(--inverse-surface)",
-            borderRadius: "24px",
-            padding: "32px 24px",
-            marginBottom: "32px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "16px",
-          }}
-        >
-          <Waveform active={!isOnHold} />
-
-          {/* Duration label + timer */}
-          <div style={{ textAlign: "center" }}>
-            <div
-              style={{
-                fontSize: "11px",
-                fontFamily: "'Geist', sans-serif",
-                letterSpacing: "0.08em",
-                color: "var(--on-surface-variant)",
-                marginBottom: "4px",
-                textTransform: "uppercase",
-              }}
-            >
-              Duration
-            </div>
-            <CallTimer />
           </div>
 
-          {/* Encrypted indicator */}
+          {/* ── Contact avatar ───────────────────────── */}
+          <div style={{ margin: "0 auto 12px", width: "fit-content" }}>
+            <Avatar firstName={firstName} lastName={lastName} size="xl" />
+          </div>
+
+          {/* ── Contact name ─────────────────────────── */}
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              color: "var(--outline-variant)",
+              fontFamily: "'Geist', sans-serif",
+              fontSize: "24px",
+              fontWeight: 600,
+              color: "var(--on-surface)",
+              marginBottom: "4px",
             }}
           >
-            <Icon name="lock" size={14} />
-            <span
+            {contactName}
+          </div>
+
+          {/* ── Contact number ───────────────────────── */}
+          <div
+            style={{
+              fontSize: "16px",
+              color: "var(--on-surface-variant)",
+              marginBottom: "32px",
+            }}
+          >
+            {contactNumber}
+          </div>
+
+          {/* ── Waveform container ───────────────────── */}
+          <div
+            style={{
+              background: "var(--inverse-surface)",
+              borderRadius: "24px",
+              padding: "32px 24px",
+              marginBottom: "32px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "16px",
+            }}
+          >
+            <Waveform active={!isOnHold} />
+
+            {/* Duration label + timer */}
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  fontSize: "11px",
+                  fontFamily: "'Geist', sans-serif",
+                  letterSpacing: "0.08em",
+                  color: "var(--on-surface-variant)",
+                  marginBottom: "4px",
+                  textTransform: "uppercase",
+                }}
+              >
+                Duration
+              </div>
+              <CallTimer />
+            </div>
+
+            {/* Encrypted indicator */}
+            <div
               style={{
-                fontSize: "12px",
-                fontFamily: "'Geist', sans-serif",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                color: "var(--outline-variant)",
               }}
             >
-              End-to-end encrypted
-            </span>
+              <Icon name="lock" size={14} />
+              <span
+                style={{
+                  fontSize: "12px",
+                  fontFamily: "'Geist', sans-serif",
+                }}
+              >
+                End-to-end encrypted
+              </span>
+            </div>
           </div>
-        </div>
 
-        {/* ── Call controls ────────────────────────── */}
-        <CallControls
-          onEndCall={onEndCall ?? (() => console.log("End call"))}
-          onMute={toggleMute}
-          onHold={toggleHold}
-          onNote={() => console.log("Add note")}
-          isMuted={isMuted}
-          isOnHold={isOnHold}
-        />
-      </Card>
+          {/* ── Call controls ────────────────────────── */}
+          <CallControls
+            onEndCall={onEndCall ?? (() => console.log("End call"))}
+            onMute={toggleMute}
+            onHold={toggleHold}
+            onNote={() => console.log("Add note")}
+            isMuted={isMuted}
+            isOnHold={isOnHold}
+          />
+        </Card>
+      </div>
     </div>
   );
 }

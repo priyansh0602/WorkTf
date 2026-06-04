@@ -141,7 +141,7 @@ export default function CallLogsPage() {
   const groupKeys = Object.keys(grouped);
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {/* Page title */}
       <h1
         style={{
@@ -151,13 +151,14 @@ export default function CallLogsPage() {
           color: "var(--on-surface)",
           marginBottom: "20px",
           marginTop: 0,
+          flexShrink: 0,
         }}
       >
         Call Logs
       </h1>
 
       {/* Search + filter */}
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "20px", flexShrink: 0 }}>
         <div style={{ marginBottom: "12px" }}>
           <SearchBar value={search} onChange={setSearch} />
         </div>
@@ -165,60 +166,62 @@ export default function CallLogsPage() {
       </div>
 
       {/* ── Results ────────────────────────────────── */}
-      {groupKeys.length === 0 ? (
-        /* Empty state */
-        <div
-          style={{
-            padding: "48px",
-            textAlign: "center",
-          }}
-        >
-          <Icon name="search_off" size={48} color="var(--outline-variant)" />
+      <div style={{ flex: 1, overflowY: "auto", paddingRight: "4px" }}>
+        {groupKeys.length === 0 ? (
+          /* Empty state */
           <div
             style={{
-              fontSize: "16px",
-              fontWeight: 500,
-              color: "var(--on-surface-variant)",
-              marginTop: "12px",
+              padding: "48px",
+              textAlign: "center",
             }}
           >
-            No calls found
-          </div>
-        </div>
-      ) : (
-        /* Grouped call list */
-        groupKeys.map((dateLabel) => (
-          <div key={dateLabel} style={{ marginBottom: "20px" }}>
+            <Icon name="search_off" size={48} color="var(--outline-variant)" />
             <div
               style={{
-                fontSize: "11px",
+                fontSize: "16px",
+                fontWeight: 500,
                 color: "var(--on-surface-variant)",
-                fontFamily: "'Geist', sans-serif",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                marginBottom: "8px",
-              }}
+                marginTop: "12px",
+                }}
             >
-              {dateLabel}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-              }}
-            >
-              {grouped[dateLabel].map((call) => (
-                <CallLogItem
-                  key={call.id}
-                  call={call}
-                  onClick={() => console.log("View call:", call.id)}
-                />
-              ))}
+              No calls found
             </div>
           </div>
-        ))
-      )}
+        ) : (
+          /* Grouped call list */
+          groupKeys.map((dateLabel) => (
+            <div key={dateLabel} style={{ marginBottom: "20px" }}>
+              <div
+                style={{
+                  fontSize: "11px",
+                  color: "var(--on-surface-variant)",
+                  fontFamily: "'Geist', sans-serif",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  marginBottom: "8px",
+                }}
+              >
+                {dateLabel}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                }}
+              >
+                {grouped[dateLabel].map((call) => (
+                  <CallLogItem
+                    key={call.id}
+                    call={call}
+                    onClick={() => console.log("View call:", call.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

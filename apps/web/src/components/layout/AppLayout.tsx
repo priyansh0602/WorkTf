@@ -19,8 +19,11 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
         marginLeft: '280px',
         flex: 1,
         padding: '32px',
-        minHeight: '100vh',
-        background: 'var(--background)'
+        height: '100vh',
+        background: 'var(--background)',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column'
       }}>
         {children}
       </main>

@@ -28,7 +28,7 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <div className="animate-fade-in" style={{ maxWidth: 720 }}>
+    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden", maxWidth: 720 }}>
       {/* Page title */}
       <h1
         style={{
@@ -38,14 +38,19 @@ export default function SettingsPage() {
           color: "var(--on-surface)",
           marginBottom: "28px",
           marginTop: 0,
+          flexShrink: 0,
         }}
       >
         Settings
       </h1>
 
-      {/* ── Sections ───────────────────────────────── */}
+      {/* ── Scrollable Settings Content ─────────────── */}
       <div
         style={{
+          flex: 1,
+          overflowY: "auto",
+          paddingRight: "4px",
+          paddingBottom: "24px",
           display: "flex",
           flexDirection: "column",
           gap: "20px",
@@ -59,32 +64,32 @@ export default function SettingsPage() {
           onChange={handleNotificationChange}
         />
         <SecuritySection />
-      </div>
 
-      {/* ── Sign out button ────────────────────────── */}
-      <button
-        type="button"
-        onClick={() => console.log("Sign out")}
-        style={{
-          background: "var(--error-container)",
-          color: "var(--on-error-container)",
-          border: "1px solid rgba(186, 26, 26, 0.2)",
-          borderRadius: "10px",
-          padding: "12px 24px",
-          fontSize: "14px",
-          fontWeight: 600,
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          fontFamily: "'Inter', sans-serif",
-          width: "fit-content",
-          marginTop: "24px",
-        }}
-      >
-        <Icon name="logout" size={18} />
-        Sign Out
-      </button>
+        {/* ── Sign out button ────────────────────────── */}
+        <button
+          type="button"
+          onClick={() => console.log("Sign out")}
+          style={{
+            background: "var(--error-container)",
+            color: "var(--on-error-container)",
+            border: "1px solid rgba(186, 26, 26, 0.2)",
+            borderRadius: "10px",
+            padding: "12px 24px",
+            fontSize: "14px",
+            fontWeight: 600,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            fontFamily: "'Inter', sans-serif",
+            width: "fit-content",
+            marginTop: "4px",
+          }}
+        >
+          <Icon name="logout" size={18} />
+          Sign Out
+        </button>
+      </div>
     </div>
   );
 }

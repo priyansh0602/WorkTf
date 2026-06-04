@@ -42,9 +42,9 @@ export default function AgentConfigPage() {
   }, [agentName, voiceStyle, goal, capabilities]);
 
   return (
-    <div className="animate-fade-in" style={{ maxWidth: 720 }}>
+    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden", maxWidth: 720 }}>
       {/* ── Page header ────────────────────────────── */}
-      <div style={{ marginBottom: "28px" }}>
+      <div style={{ marginBottom: "28px", flexShrink: 0 }}>
         <h1
           style={{
             fontFamily: "'Geist', sans-serif",
@@ -68,9 +68,13 @@ export default function AgentConfigPage() {
         </p>
       </div>
 
-      {/* ── Config sections ────────────────────────── */}
+      {/* ── Scrollable Config Content ──────────────── */}
       <div
         style={{
+          flex: 1,
+          overflowY: "auto",
+          paddingRight: "4px",
+          paddingBottom: "24px",
           display: "flex",
           flexDirection: "column",
           gap: "20px",
@@ -90,18 +94,18 @@ export default function AgentConfigPage() {
           callRecording={capabilities.callRecording}
           onChange={handleCapabilityChange}
         />
-      </div>
 
-      {/* ── Save button ────────────────────────────── */}
-      <Button
-        variant="primary"
-        size="md"
-        icon="save"
-        onClick={handleSave}
-        style={{ width: "fit-content", marginTop: "24px" }}
-      >
-        Save Configuration
-      </Button>
+        {/* ── Save button ────────────────────────────── */}
+        <Button
+          variant="primary"
+          size="md"
+          icon="save"
+          onClick={handleSave}
+          style={{ width: "fit-content", marginTop: "4px" }}
+        >
+          Save Configuration
+        </Button>
+      </div>
     </div>
   );
 }
