@@ -47,20 +47,20 @@ export default function ActiveCallPage({
           maxWidth: 520,
           margin: '0 auto',
           width: '100%',
-          marginBottom: 24
+          marginBottom: 16
         }}
       >
         Active Call
       </h1>
 
       <div style={{ flex: 1, overflowY: 'auto', maxWidth: 520, margin: '0 auto', width: '100%' }}>
-        <Card padding={32} style={{ textAlign: "center" }}>
+        <Card padding={24} style={{ textAlign: "center" }}>
           {/* ── Status pill ──────────────────────────── */}
           <div
             style={{
               display: "flex",
               justifyContent: "center",
-              marginBottom: "24px",
+              marginBottom: "16px",
             }}
           >
             <div
@@ -119,7 +119,7 @@ export default function ActiveCallPage({
           </div>
 
           {/* ── Contact avatar ───────────────────────── */}
-          <div style={{ margin: "0 auto 12px", width: "fit-content" }}>
+          <div style={{ margin: "0 auto 8px", width: "fit-content" }}>
             <Avatar firstName={firstName} lastName={lastName} size="xl" />
           </div>
 
@@ -130,7 +130,7 @@ export default function ActiveCallPage({
               fontSize: "24px",
               fontWeight: 600,
               color: "var(--on-surface)",
-              marginBottom: "4px",
+              marginBottom: "2px",
             }}
           >
             {contactName}
@@ -141,7 +141,7 @@ export default function ActiveCallPage({
             style={{
               fontSize: "16px",
               color: "var(--on-surface-variant)",
-              marginBottom: "32px",
+              marginBottom: "16px",
             }}
           >
             {contactNumber}
@@ -152,8 +152,8 @@ export default function ActiveCallPage({
             style={{
               background: "var(--inverse-surface)",
               borderRadius: "24px",
-              padding: "32px 24px",
-              marginBottom: "32px",
+              padding: "24px 16px",
+              marginBottom: "24px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
