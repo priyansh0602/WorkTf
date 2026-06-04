@@ -42,9 +42,9 @@ export default function AgentConfigPage() {
   }, [agentName, voiceStyle, goal, capabilities]);
 
   return (
-    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden", maxWidth: 720 }}>
+    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', maxWidth: 720 }}>
       {/* ── Page header ────────────────────────────── */}
-      <div style={{ marginBottom: "28px", flexShrink: 0 }}>
+      <div style={{ flexShrink: 0, marginBottom: 28 }}>
         <h1
           style={{
             fontFamily: "'Geist', sans-serif",
@@ -72,12 +72,12 @@ export default function AgentConfigPage() {
       <div
         style={{
           flex: 1,
-          overflowY: "auto",
-          paddingRight: "4px",
-          paddingBottom: "24px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
+          overflowY: 'auto',
+          paddingRight: 4,
+          paddingBottom: 24,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 20
         }}
       >
         <IdentitySection

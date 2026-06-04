@@ -141,7 +141,7 @@ export default function CallLogsPage() {
   const groupKeys = Object.keys(grouped);
 
   return (
-    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Page title */}
       <h1
         style={{
@@ -149,16 +149,16 @@ export default function CallLogsPage() {
           fontSize: "28px",
           fontWeight: 700,
           color: "var(--on-surface)",
-          marginBottom: "20px",
           marginTop: 0,
           flexShrink: 0,
+          marginBottom: 20
         }}
       >
         Call Logs
       </h1>
 
       {/* Search + filter */}
-      <div style={{ marginBottom: "20px", flexShrink: 0 }}>
+      <div style={{ flexShrink: 0, marginBottom: 20 }}>
         <div style={{ marginBottom: "12px" }}>
           <SearchBar value={search} onChange={setSearch} />
         </div>
@@ -166,7 +166,7 @@ export default function CallLogsPage() {
       </div>
 
       {/* ── Results ────────────────────────────────── */}
-      <div style={{ flex: 1, overflowY: "auto", paddingRight: "4px" }}>
+      <div style={{ flex: 1, overflowY: 'auto', paddingRight: 4 }}>
         {groupKeys.length === 0 ? (
           /* Empty state */
           <div

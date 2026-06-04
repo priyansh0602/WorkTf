@@ -121,15 +121,15 @@ export default function DashboardPage({
   onManageAgent,
 }: DashboardPageProps) {
   return (
-    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* ── Page header ────────────────────────────── */}
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "28px",
           flexShrink: 0,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 28
         }}
       >
         <div>
@@ -162,7 +162,7 @@ export default function DashboardPage({
       </div>
 
       {/* ── Scrollable Content Wrapper ──────────────── */}
-      <div style={{ flex: 1, overflowY: "auto", paddingRight: "4px" }}>
+      <div style={{ flex: 1, overflowY: 'auto', paddingRight: 4 }}>
         {/* ── Agent status ───────────────────────────── */}
         <AgentStatusCard
           isActive={true}

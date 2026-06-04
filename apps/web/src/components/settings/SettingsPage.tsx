@@ -28,7 +28,7 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden", maxWidth: 720 }}>
+    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', maxWidth: 720 }}>
       {/* Page title */}
       <h1
         style={{
@@ -36,9 +36,9 @@ export default function SettingsPage() {
           fontSize: "28px",
           fontWeight: 700,
           color: "var(--on-surface)",
-          marginBottom: "28px",
           marginTop: 0,
           flexShrink: 0,
+          marginBottom: 28
         }}
       >
         Settings
@@ -48,12 +48,12 @@ export default function SettingsPage() {
       <div
         style={{
           flex: 1,
-          overflowY: "auto",
-          paddingRight: "4px",
-          paddingBottom: "24px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
+          overflowY: 'auto',
+          paddingRight: 4,
+          paddingBottom: 24,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 20
         }}
       >
         <ProfileCard />

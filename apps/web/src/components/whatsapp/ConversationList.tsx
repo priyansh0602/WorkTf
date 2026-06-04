@@ -50,17 +50,17 @@ export default function ConversationList({
   return (
     <div
       style={{
-        width: "320px",
+        width: 320,
         flexShrink: 0,
-        borderRight: "1px solid var(--outline-variant)",
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        overflow: "hidden",
+        borderRight: '1px solid var(--outline-variant)',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden'
       }}
     >
       {/* Header */}
-      <div style={{ padding: "16px", flexShrink: 0 }}>
+      <div style={{ flexShrink: 0, padding: 16 }}>
         <div
           style={{
             display: "flex",
@@ -97,12 +97,12 @@ export default function ConversationList({
       </div>
 
       {/* Search */}
-      <div style={{ padding: "0 16px 12px", flexShrink: 0 }}>
+      <div style={{ flexShrink: 0, padding: '0 16px 12px' }}>
         <SearchBar value={search} onChange={setSearch} />
       </div>
 
       {/* Filter tabs */}
-      <div style={{ padding: "0 16px 12px", display: "flex", gap: "8px", flexShrink: 0 }}>
+      <div style={{ flexShrink: 0, padding: '0 16px 12px', display: "flex", gap: "8px" }}>
         {FILTERS.map((f) => (
           <FilterPill
             key={f}
@@ -114,7 +114,7 @@ export default function ConversationList({
       </div>
 
       {/* Conversation list */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "8px" }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: 8 }}>
         {filtered.length === 0 ? (
           <div
             style={{

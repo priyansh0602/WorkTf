@@ -113,15 +113,15 @@ export default function WhatsAppPage() {
     : [];
 
   return (
-    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
+    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Page header */}
       <div
         style={{
+          flexShrink: 0,
+          marginBottom: 20,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "20px",
-          flexShrink: 0,
         }}
       >
         <div>
@@ -174,7 +174,7 @@ export default function WhatsAppPage() {
       </Modal>
 
       {/* Main content: split panel */}
-      <Card padding={0} style={{ overflow: "hidden", display: "flex", flex: 1 }}>
+      <Card padding={0} style={{ flex: 1, overflow: 'hidden', display: 'flex' }}>
         <ConversationList
           conversations={MOCK_CONVERSATIONS}
           activeId={activeConversation?.id}

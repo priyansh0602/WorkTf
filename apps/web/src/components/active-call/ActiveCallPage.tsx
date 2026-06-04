@@ -34,7 +34,7 @@ export default function ActiveCallPage({
   const lastName = nameParts.slice(1).join(" ");
 
   return (
-    <div className="animate-fade-in" style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Page title */}
       <h1
         style={{
@@ -42,18 +42,18 @@ export default function ActiveCallPage({
           fontSize: "28px",
           fontWeight: 700,
           color: "var(--on-surface)",
-          marginBottom: "24px",
           marginTop: 0,
           flexShrink: 0,
-          width: "100%",
-          maxWidth: "520px",
-          margin: "0 auto 24px",
+          maxWidth: 520,
+          margin: '0 auto',
+          width: '100%',
+          marginBottom: 24
         }}
       >
         Active Call
       </h1>
 
-      <div style={{ flex: 1, overflowY: "auto", maxWidth: "520px", margin: "0 auto", width: "100%" }}>
+      <div style={{ flex: 1, overflowY: 'auto', maxWidth: 520, margin: '0 auto', width: '100%' }}>
         <Card padding={32} style={{ textAlign: "center" }}>
           {/* ── Status pill ──────────────────────────── */}
           <div

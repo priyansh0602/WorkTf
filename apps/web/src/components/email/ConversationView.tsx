@@ -66,21 +66,21 @@ export default function ConversationView({
     <div
       style={{
         flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        overflow: "hidden",
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden'
       }}
     >
       {/* Header with subject line */}
       <div
         style={{
+          flexShrink: 0,
           padding: "16px",
           borderBottom: "1px solid var(--outline-variant)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          flexShrink: 0,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -141,11 +141,11 @@ export default function ConversationView({
       <div
         style={{
           flex: 1,
-          overflowY: "auto",
-          padding: "16px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "4px",
+          overflowY: 'auto',
+          padding: 16,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4
         }}
       >
         {messages.map((msg) => {
@@ -221,13 +221,13 @@ export default function ConversationView({
       {/* AI status bar */}
       <div
         style={{
+          flexShrink: 0,
           padding: "8px 16px",
           background: "var(--surface-low)",
           borderTop: "1px solid var(--outline-variant)",
           display: "flex",
           alignItems: "center",
           gap: "8px",
-          flexShrink: 0,
         }}
       >
         <div
@@ -252,12 +252,12 @@ export default function ConversationView({
       {/* Input area */}
       <div
         style={{
+          flexShrink: 0,
           padding: "12px 16px",
           borderTop: "1px solid var(--outline-variant)",
           display: "flex",
           gap: "8px",
           alignItems: "flex-end",
-          flexShrink: 0,
         }}
       >
         <textarea

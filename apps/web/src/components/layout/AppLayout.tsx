@@ -16,14 +16,14 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
     }}>
       <Sidebar activePage={activePage} onNavigate={onNavigate} />
       <main style={{
-        marginLeft: '280px',
+        marginLeft: 280,
         flex: 1,
-        padding: '32px',
+        padding: 32,
         height: '100vh',
-        background: 'var(--background)',
         overflow: 'hidden',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        background: 'var(--background)'
       }}>
         {children}
       </main>
