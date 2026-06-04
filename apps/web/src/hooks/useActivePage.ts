@@ -19,6 +19,9 @@ interface UseActivePageReturn {
 const PAGE_TO_PATH: Record<string, string> = {
   dashboard: "/dashboard",
   "active-call": "/dashboard/active-call",
+  whatsapp: "/dashboard/whatsapp",
+  instagram: "/dashboard/instagram",
+  email: "/dashboard/email",
   "call-logs": "/dashboard/call-logs",
   "agent-config": "/dashboard/agent-config",
   settings: "/dashboard/settings",

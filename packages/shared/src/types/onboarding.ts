@@ -15,6 +15,8 @@ export interface IOnboardingAnswers {
   callVolume: CallVolume;
   agentTone: AgentTone;
   audienceType: AudienceType;
+  /** Selected channel combination from the 5th onboarding step. */
+  channels?: string;
 }
 
 /** Configuration for a single step in the onboarding wizard. */

@@ -26,6 +26,10 @@ interface InputProps {
   style?: React.CSSProperties;
   name?: string;
   required?: boolean;
+  /** Minimum value for number inputs */
+  min?: number;
+  /** Maximum value for number inputs */
+  max?: number;
 }
 
 export default function Input({
@@ -40,6 +44,8 @@ export default function Input({
   style,
   name,
   required = false,
+  min,
+  max,
 }: InputProps) {
   const [focused, setFocused] = useState(false);
 
@@ -107,6 +113,8 @@ export default function Input({
           onChange={onChange}
           disabled={disabled}
           required={required}
+          min={min}
+          max={max}
           onFocus={handleFocus}
           onBlur={handleBlur}
           style={{

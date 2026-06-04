@@ -1,9 +1,12 @@
 /**
- * Agent — Type definitions for the AI calling agent configuration.
+ * Agent — Type definitions for the AI agent configuration.
  *
  * Each user creates one agent during onboarding. The agent's settings
  * drive the VAPI assistant creation and determine call behavior.
+ * Supports multi-channel: calling, WhatsApp, Instagram, and Email.
  */
+
+import type { IMessagingAgentConfig } from "./message";
 
 // ─── Enums ──────────────────────────────────────────────────────────
 
@@ -21,6 +24,9 @@ export enum AgentUseCase {
   APPOINTMENT_BOOKING = "APPOINTMENT_BOOKING",
   CUSTOMER_SUPPORT = "CUSTOMER_SUPPORT",
   OUTBOUND_SALES = "OUTBOUND_SALES",
+  WHATSAPP_OUTREACH = "WHATSAPP_OUTREACH",
+  INSTAGRAM_OUTREACH = "INSTAGRAM_OUTREACH",
+  EMAIL_OUTREACH = "EMAIL_OUTREACH",
 }
 
 /** Expected monthly call volume — determines resource allocation. */
@@ -47,6 +53,14 @@ export enum VoiceStyle {
   FRIENDLY_FEMALE = "FRIENDLY_FEMALE",
 }
 
+/** Available communication channels. */
+export enum ChannelType {
+  CALLING = "CALLING",
+  WHATSAPP = "WHATSAPP",
+  INSTAGRAM = "INSTAGRAM",
+  EMAIL = "EMAIL",
+}
+
 // ─── Interfaces ─────────────────────────────────────────────────────
 
 /** Complete agent configuration stored in the database. */
@@ -70,6 +84,10 @@ export interface IAgent {
   /** Phone number ID linked to this agent in VAPI. */
   vapiPhoneNumberId?: string;
   isActive: boolean;
+  /** Per-channel messaging configurations. */
+  messagingConfigs?: IMessagingAgentConfig[];
+  /** Channels the user has enabled. */
+  enabledChannels?: ChannelType[];
   createdAt: Date;
   updatedAt: Date;
 }

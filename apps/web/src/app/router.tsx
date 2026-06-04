@@ -21,6 +21,9 @@ import { ActiveCallPage } from "@components/active-call";
 import { CallLogsPage } from "@components/call-logs";
 import { AgentConfigPage } from "@components/agent-config";
 import { SettingsPage } from "@components/settings";
+import { WhatsAppPage } from "@components/whatsapp";
+import { InstagramPage } from "@components/instagram";
+import { EmailPage } from "@components/email";
 import AppLayout from "@components/layout/AppLayout";
 import { useActivePage } from "@hooks/useActivePage";
 
@@ -79,6 +82,9 @@ function AppRoutes() {
         <Route path="call-logs" element={<CallLogsPage />} />
         <Route path="agent-config" element={<AgentConfigPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="whatsapp" element={<WhatsAppPage />} />
+        <Route path="instagram" element={<InstagramPage />} />
+        <Route path="email" element={<EmailPage />} />
       </Route>
     </Routes>
   );

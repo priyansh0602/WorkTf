@@ -1,8 +1,8 @@
 /**
  * OnboardingFlow — Multi-step onboarding wizard controller.
  *
- * Manages step navigation and answer collection across four
- * onboarding questions (use case, call volume, tone, audience).
+ * Manages step navigation and answer collection across five
+ * onboarding questions (use case, call volume, tone, audience, channels).
  * On completion, passes the collected answers to the parent via
  * the onComplete callback.
  */
@@ -16,7 +16,7 @@ import QuestionCard from "./QuestionCard";
 // ─── Question definitions ───────────────────────────────────────────
 
 interface QuestionDef {
-  id: keyof IOnboardingAnswers;
+  id: string;
   title: string;
   subtitle: string;
   options: IOnboardingOption[];
@@ -151,6 +151,38 @@ const QUESTIONS: QuestionDef[] = [
       },
     ],
   },
+  {
+    id: "channels",
+    title: "Which channels do you want to activate?",
+    subtitle:
+      "You can enable more channels anytime. Start with what matters most to your business.",
+    options: [
+      {
+        value: "CALLING_ONLY",
+        icon: "phone_in_talk",
+        label: "Calling Only",
+        desc: "Start with AI voice calls. Most powerful for direct outreach.",
+      },
+      {
+        value: "CALLING_WHATSAPP",
+        icon: "chat",
+        label: "Calling + WhatsApp",
+        desc: "Combine voice and messaging for higher reach rates.",
+      },
+      {
+        value: "CALLING_EMAIL",
+        icon: "mail",
+        label: "Calling + Email",
+        desc: "Follow up calls with automated email sequences.",
+      },
+      {
+        value: "ALL_CHANNELS",
+        icon: "hub",
+        label: "All Channels",
+        desc: "Full multi-channel outreach: calls, WhatsApp, Instagram, and email.",
+      },
+    ],
+  },
 ];
 
 // ─── Component ──────────────────────────────────────────────────────
@@ -165,7 +197,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
   const currentQuestion = QUESTIONS[step];
   const isLastStep = step === QUESTIONS.length - 1;
-  const currentAnswer = answers[currentQuestion.id] as string | undefined;
+  const currentAnswer = (answers as Record<string, string | undefined>)[currentQuestion.id];
 
   /** Go to previous step (minimum 0) */
   const handleBack = useCallback(() => {

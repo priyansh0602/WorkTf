@@ -8,12 +8,12 @@
 
 import type { ICall } from "@worktf/shared";
 import { CallDirection, CallStatus, CallOutcome } from "@worktf/shared";
-import { Button } from "@components/ui";
+import { Button, Card, Icon, Badge } from "@components/ui";
 import AgentStatusCard from "./AgentStatusCard";
 import MetricCard from "./MetricCard";
 import RecentCallsTable from "./RecentCallsTable";
 
-// ─── Mock data ──────────────────────────────────────────────────────
+// ─── Mock data (real API data comes in Phase 10) ────────────────────
 
 const MOCK_CALLS: ICall[] = [
   {
@@ -87,6 +87,15 @@ const MOCK_CALLS: ICall[] = [
     updatedAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
   },
 ];
+
+// ─── Channel cards data ─────────────────────────────────────────────
+
+const CHANNELS = [
+  { icon: "phone_in_talk", label: "Calling", stat: "1,284 calls this month", active: true },
+  { icon: "chat", label: "WhatsApp", stat: "0 conversations", active: false },
+  { icon: "photo_camera", label: "Instagram", stat: "0 conversations", active: false },
+  { icon: "mail", label: "Email", stat: "0 emails sent", active: false },
+] as const;
 
 // ─── Component ──────────────────────────────────────────────────────
 
@@ -203,6 +212,73 @@ export default function DashboardPage({
           icon="trending_up"
           color="#c2410c"
         />
+      </div>
+
+      {/* ── Active channels ────────────────────────── */}
+      <div style={{ marginBottom: "24px" }}>
+        <h2
+          style={{
+            fontFamily: "'Geist', sans-serif",
+            fontSize: "16px",
+            fontWeight: 600,
+            color: "var(--on-surface)",
+            marginBottom: "12px",
+            marginTop: 0,
+          }}
+        >
+          Active Channels
+        </h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "12px",
+          }}
+        >
+          {CHANNELS.map((ch) => (
+            <Card key={ch.label} padding={16}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "8px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <Icon name={ch.icon} size={18} color="var(--on-surface)" />
+                  <span
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      color: "var(--on-surface)",
+                    }}
+                  >
+                    {ch.label}
+                  </span>
+                </div>
+                <Badge
+                  label={ch.active ? "Active" : "Inactive"}
+                  color={ch.active ? "green" : "gray"}
+                />
+              </div>
+              <div
+                style={{
+                  fontSize: "13px",
+                  color: "var(--on-surface-variant)",
+                }}
+              >
+                {ch.stat}
+              </div>
+            </Card>
+          ))}
+        </div>
       </div>
 
       {/* ── Recent calls table ─────────────────────── */}
