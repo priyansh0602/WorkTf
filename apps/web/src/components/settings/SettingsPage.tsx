@@ -5,7 +5,7 @@
  */
 
 import { useState, useCallback } from "react";
-import { Icon } from "@components/ui";
+
 import ProfileCard from "./ProfileCard";
 import NotificationsSection from "./NotificationsSection";
 import SecuritySection from "./SecuritySection";
@@ -28,7 +28,7 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', maxWidth: 720 }}>
+    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', maxWidth: 720, margin: '0 auto', width: '100%' }}>
       {/* Page title */}
       <h1
         style={{
@@ -48,7 +48,6 @@ export default function SettingsPage() {
       <div
         style={{
           flex: 1,
-          overflowY: 'auto',
           paddingRight: 4,
           paddingBottom: 24,
           display: 'flex',
@@ -64,31 +63,6 @@ export default function SettingsPage() {
           onChange={handleNotificationChange}
         />
         <SecuritySection />
-
-        {/* ── Sign out button ────────────────────────── */}
-        <button
-          type="button"
-          onClick={() => console.log("Sign out")}
-          style={{
-            background: "var(--error-container)",
-            color: "var(--on-error-container)",
-            border: "1px solid rgba(186, 26, 26, 0.2)",
-            borderRadius: "10px",
-            padding: "12px 24px",
-            fontSize: "14px",
-            fontWeight: 600,
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            fontFamily: "'Inter', sans-serif",
-            width: "fit-content",
-            marginTop: "4px",
-          }}
-        >
-          <Icon name="logout" size={18} />
-          Sign Out
-        </button>
       </div>
     </div>
   );
