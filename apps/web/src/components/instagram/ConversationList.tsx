@@ -4,7 +4,7 @@
  * Same structure as WhatsApp ConversationList but themed for Instagram.
  */
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import type { IConversation } from "@worktf/shared";
 import { Icon } from "@components/ui";
 import { SearchBar } from "@components/call-logs";
@@ -58,58 +58,61 @@ export default function ConversationList({
         overflow: 'hidden'
       }}
     >
-      {/* Header */}
-      <div style={{ flexShrink: 0, padding: 16 }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span
+      {/* Header + Search + Filter tabs container */}
+      <div style={{ flexShrink: 0, borderBottom: '1px solid var(--outline-variant)' }}>
+        {/* Header */}
+        <div style={{ padding: 16 }}>
+          <div
             style={{
-              fontFamily: "'Geist', sans-serif",
-              fontSize: "16px",
-              fontWeight: 600,
-              color: "var(--on-surface)",
-            }}
-          >
-            Conversations
-          </span>
-          <button
-            type="button"
-            onClick={onNewOutreach}
-            style={{
-              background: "var(--primary)",
-              color: "var(--on-primary)",
-              border: "none",
-              borderRadius: "8px",
-              padding: "4px",
-              cursor: "pointer",
               display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <Icon name="add" size={20} />
-          </button>
+            <span
+              style={{
+                fontFamily: "'Geist', sans-serif",
+                fontSize: "16px",
+                fontWeight: 600,
+                color: "var(--on-surface)",
+              }}
+            >
+              Conversations
+            </span>
+            <button
+              type="button"
+              onClick={onNewOutreach}
+              style={{
+                background: "var(--primary)",
+                color: "var(--on-primary)",
+                border: "none",
+                borderRadius: "8px",
+                padding: "4px",
+                cursor: "pointer",
+                display: "flex",
+              }}
+            >
+              <Icon name="add" size={20} />
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Search */}
-      <div style={{ flexShrink: 0, padding: '0 16px 12px' }}>
-        <SearchBar value={search} onChange={setSearch} />
-      </div>
+        {/* Search */}
+        <div style={{ padding: '0 16px 12px' }}>
+          <SearchBar value={search} onChange={setSearch} />
+        </div>
 
-      {/* Filter tabs */}
-      <div style={{ flexShrink: 0, padding: '0 16px 12px', display: "flex", gap: "8px" }}>
-        {FILTERS.map((f) => (
-          <FilterPill
-            key={f}
-            label={f}
-            isActive={activeFilter === f}
-            onClick={() => setActiveFilter(f)}
-          />
-        ))}
+        {/* Filter tabs */}
+        <div style={{ display: "flex", justifyContent: "center", gap: "16px", borderBottom: "1px solid var(--outline-variant)", padding: "0 16px" }}>
+          {FILTERS.map((f) => (
+            <FilterTab
+              key={f}
+              label={f}
+              isActive={activeFilter === f}
+              onClick={() => setActiveFilter(f)}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Conversation list */}
@@ -126,7 +129,7 @@ export default function ConversationList({
             }}
           >
             <Icon
-              name="photo_camera"
+              name="chat_bubble_outline"
               size={48}
               color="var(--outline-variant)"
             />
@@ -164,8 +167,8 @@ export default function ConversationList({
   );
 }
 
-/** Small filter pill button. */
-function FilterPill({
+/** Traditional tab button. */
+function FilterTab({
   label,
   isActive,
   onClick,
@@ -174,32 +177,24 @@ function FilterPill({
   isActive: boolean;
   onClick: () => void;
 }) {
-  const [hovered, setHovered] = useState(false);
-  const handleEnter = useCallback(() => setHovered(true), []);
-  const handleLeave = useCallback(() => setHovered(false), []);
-
   return (
     <button
       type="button"
       onClick={onClick}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
       style={{
-        padding: "4px 12px",
-        borderRadius: "999px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "12px 16px",
         border: "none",
-        fontSize: "12px",
+        borderBottom: isActive ? "2px solid var(--primary)" : "2px solid transparent",
+        background: "transparent",
+        fontSize: "14px",
         fontFamily: "'Geist', sans-serif",
-        fontWeight: 500,
+        fontWeight: isActive ? 600 : 500,
         cursor: "pointer",
-        whiteSpace: "nowrap",
-        background: isActive
-          ? "var(--primary)"
-          : hovered
-            ? "var(--surface-high)"
-            : "var(--surface-container)",
-        color: isActive ? "var(--on-primary)" : "var(--on-surface-variant)",
-        transition: "background 0.15s",
+        color: isActive ? "var(--primary)" : "var(--on-surface-variant)",
+        transition: "all 0.15s",
       }}
     >
       {label}

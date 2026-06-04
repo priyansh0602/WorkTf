@@ -4,7 +4,7 @@
  * Shows an inbox-style list with "All", "Sent", "Follow-up", "Replied" filters.
  */
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import type { IConversation } from "@worktf/shared";
 import { Icon } from "@components/ui";
 import { SearchBar } from "@components/call-logs";
@@ -103,17 +103,9 @@ export default function ConversationList({
       </div>
 
       {/* Filter tabs */}
-      <div
-        style={{
-          flexShrink: 0,
-          padding: '0 16px 12px',
-          display: "flex",
-          gap: "8px",
-          flexWrap: "wrap",
-        }}
-      >
+      <div style={{ display: "flex", justifyContent: "center", gap: "16px", borderBottom: "1px solid var(--outline-variant)", padding: "0 16px" }}>
         {FILTERS.map((f) => (
-          <FilterPill
+          <FilterTab
             key={f}
             label={f}
             isActive={activeFilter === f}
@@ -135,7 +127,7 @@ export default function ConversationList({
               textAlign: "center",
             }}
           >
-            <Icon name="mail_outline" size={48} color="var(--outline-variant)" />
+            <Icon name="mail" size={48} color="var(--outline-variant)" />
             <div
               style={{
                 fontSize: "14px",
@@ -143,7 +135,7 @@ export default function ConversationList({
                 marginTop: "12px",
               }}
             >
-              No emails yet
+              No conversations yet
             </div>
             <div
               style={{
@@ -152,7 +144,7 @@ export default function ConversationList({
                 marginTop: "4px",
               }}
             >
-              Start a new email campaign
+              Start a new outreach campaign
             </div>
           </div>
         ) : (
@@ -170,8 +162,8 @@ export default function ConversationList({
   );
 }
 
-/** Small filter pill button. */
-function FilterPill({
+/** Traditional tab button. */
+function FilterTab({
   label,
   isActive,
   onClick,
@@ -180,32 +172,24 @@ function FilterPill({
   isActive: boolean;
   onClick: () => void;
 }) {
-  const [hovered, setHovered] = useState(false);
-  const handleEnter = useCallback(() => setHovered(true), []);
-  const handleLeave = useCallback(() => setHovered(false), []);
-
   return (
     <button
       type="button"
       onClick={onClick}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
       style={{
-        padding: "4px 12px",
-        borderRadius: "999px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "12px 16px",
         border: "none",
-        fontSize: "12px",
+        borderBottom: isActive ? "2px solid var(--primary)" : "2px solid transparent",
+        background: "transparent",
+        fontSize: "14px",
         fontFamily: "'Geist', sans-serif",
-        fontWeight: 500,
+        fontWeight: isActive ? 600 : 500,
         cursor: "pointer",
-        whiteSpace: "nowrap",
-        background: isActive
-          ? "var(--primary)"
-          : hovered
-            ? "var(--surface-high)"
-            : "var(--surface-container)",
-        color: isActive ? "var(--on-primary)" : "var(--on-surface-variant)",
-        transition: "background 0.15s",
+        color: isActive ? "var(--primary)" : "var(--on-surface-variant)",
+        transition: "all 0.15s",
       }}
     >
       {label}

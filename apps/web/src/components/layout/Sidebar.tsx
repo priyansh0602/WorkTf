@@ -55,7 +55,6 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
       borderRight: "1px solid var(--outline-variant)",
       display: "flex",
       flexDirection: "column",
-      padding: "16px",
       zIndex: 40,
       overflow: "hidden",
       boxSizing: "border-box",
@@ -65,6 +64,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
         display: "flex",
         alignItems: "center",
         gap: "12px",
+        padding: "16px 16px 0",
         marginBottom: "32px",
         flexShrink: 0,
       }}>
@@ -90,7 +90,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
       </div>
 
       {/* 2. NEW CAMPAIGN BUTTON */}
-      <div style={{ marginBottom: "24px", flexShrink: 0 }}>
+      <div style={{ padding: "0 16px 24px", flexShrink: 0 }}>
         <Button
           variant="primary"
           icon="add_call"
@@ -102,7 +102,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
       </div>
 
       {/* 3. NAVIGATION LINKS */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "2px", flex: 1, overflowY: "auto", minHeight: 0 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "2px", flex: 1, overflowY: "auto", minHeight: 0, padding: "0 16px" }}>
         {SIDEBAR_ENTRIES.map((entry, index) => {
           if (entry.type === "divider") {
             return (
@@ -169,13 +169,14 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
       <div style={{
         height: "1px",
         background: "var(--outline-variant)",
-        margin: "16px 0",
+        margin: "16px 16px",
         flexShrink: 0,
       }} />
       <div style={{
         display: "flex",
         alignItems: "center",
         gap: "12px",
+        padding: "0 16px 16px",
         flexShrink: 0,
       }}>
         <Avatar size="md" firstName="John" lastName="Doe" />

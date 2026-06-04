@@ -164,7 +164,7 @@ export default function EmailPage() {
       </Modal>
 
       {/* Main content: split panel */}
-      <Card padding={0} style={{ flex: 1, overflow: 'hidden', display: 'flex' }}>
+      <div style={{ flex: 1, overflow: 'hidden', display: 'flex', borderTop: '1px solid var(--outline-variant)' }}>
         <ConversationList
           conversations={MOCK_CONVERSATIONS}
           activeId={activeConversation?.id}
@@ -176,7 +176,7 @@ export default function EmailPage() {
           messages={activeMessages}
           onSendMessage={(content) => console.log("Send:", content)}
         />
-      </Card>
+      </div>
     </div>
   );
 }
