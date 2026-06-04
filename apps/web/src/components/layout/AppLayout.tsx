@@ -22,6 +22,7 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
         flex: 1,
         padding: 32,
         height: '100vh',
+        boxSizing: 'border-box',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
