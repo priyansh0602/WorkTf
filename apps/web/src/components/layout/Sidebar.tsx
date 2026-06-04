@@ -58,6 +58,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
       padding: "16px",
       zIndex: 40,
       overflow: "hidden",
+      boxSizing: "border-box",
     }}>
       {/* 1. LOGO AREA */}
       <div style={{
@@ -65,6 +66,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
         alignItems: "center",
         gap: "12px",
         marginBottom: "32px",
+        flexShrink: 0,
       }}>
         <div style={{
           width: "32px",
@@ -88,7 +90,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
       </div>
 
       {/* 2. NEW CAMPAIGN BUTTON */}
-      <div style={{ marginBottom: "24px" }}>
+      <div style={{ marginBottom: "24px", flexShrink: 0 }}>
         <Button
           variant="primary"
           icon="add_call"
@@ -100,7 +102,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
       </div>
 
       {/* 3. NAVIGATION LINKS */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "2px", flex: 1, overflowY: "auto" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "2px", flex: 1, overflowY: "auto", minHeight: 0 }}>
         {SIDEBAR_ENTRIES.map((entry, index) => {
           if (entry.type === "divider") {
             return (
@@ -136,17 +138,24 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
                 width: "100%",
                 textAlign: "left",
                 fontSize: "14px",
-                fontFamily: "Inter, sans-serif",
-                background: isActive ? "var(--secondary-container)" : "transparent",
-                color: isActive ? "var(--on-secondary-container)" : "var(--on-surface-variant)",
-                fontWeight: isActive ? 600 : 400,
-                transition: "background 0.15s",
+                fontFamily: "Geist, sans-serif",
+                background: isActive ? "var(--primary-fixed)" : "transparent",
+                color: isActive ? "var(--primary)" : "var(--on-surface-variant)",
+                fontWeight: isActive ? 600 : 500,
+                transition: "background 0.15s, color 0.15s",
+                boxSizing: "border-box",
               }}
               onMouseEnter={(e) => {
-                if (!isActive) e.currentTarget.style.background = "var(--surface-low)";
+                if (!isActive) {
+                  e.currentTarget.style.background = "var(--surface-low)";
+                  e.currentTarget.style.color = "var(--on-surface)";
+                }
               }}
               onMouseLeave={(e) => {
-                if (!isActive) e.currentTarget.style.background = "transparent";
+                if (!isActive) {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = "var(--on-surface-variant)";
+                }
               }}
             >
               <Icon name={entry.icon} fill={isActive} style={{ fontSize: "20px" }} />
@@ -161,11 +170,13 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
         height: "1px",
         background: "var(--outline-variant)",
         margin: "16px 0",
+        flexShrink: 0,
       }} />
       <div style={{
         display: "flex",
         alignItems: "center",
         gap: "12px",
+        flexShrink: 0,
       }}>
         <Avatar size="md" firstName="John" lastName="Doe" />
         <div style={{ display: "flex", flexDirection: "column" }}>

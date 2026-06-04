@@ -11,7 +11,9 @@ export default function AppLayout({ children, activePage, onNavigate }: AppLayou
   return (
     <div style={{
       display: 'flex',
-      minHeight: '100vh',
+      height: '100vh',
+      width: '100vw',
+      overflow: 'hidden',
       background: 'var(--background)'
     }}>
       <Sidebar activePage={activePage} onNavigate={onNavigate} />
