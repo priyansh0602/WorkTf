@@ -42,7 +42,7 @@ export default function AgentConfigPage() {
   }, [agentName, voiceStyle, goal, capabilities]);
 
   return (
-    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', maxWidth: 720 }}>
+    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', maxWidth: 720, margin: '0 auto', width: '100%' }}>
       {/* ── Page header ────────────────────────────── */}
       <div style={{ flexShrink: 0, marginBottom: 28 }}>
         <h1
