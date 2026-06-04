@@ -180,7 +180,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
         flexShrink: 0,
       }}>
         <Avatar size="md" firstName="John" lastName="Doe" />
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
           <span style={{
             fontSize: "14px",
             fontWeight: 600,
@@ -191,6 +191,33 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
             color: "var(--on-surface-variant)",
           }}>Pro Plan</span>
         </div>
+        <button
+          type="button"
+          onClick={() => console.log("Sign out")}
+          style={{
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            color: "var(--on-surface-variant)",
+            padding: "8px",
+            borderRadius: "8px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "all 0.2s"
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--error-container)";
+            e.currentTarget.style.color = "var(--on-error-container)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.color = "var(--on-surface-variant)";
+          }}
+          title="Sign Out"
+        >
+          <Icon name="logout" size={20} />
+        </button>
       </div>
     </div>
   );
