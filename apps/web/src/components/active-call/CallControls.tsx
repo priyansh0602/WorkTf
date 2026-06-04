@@ -36,7 +36,7 @@ export default function CallControls({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "24px",
+        gap: "16px",
       }}
     >
       {/* ── Secondary controls row ─────────────────── */}
@@ -44,7 +44,7 @@ export default function CallControls({
         style={{
           display: "flex",
           justifyContent: "center",
-          gap: "24px",
+          gap: "16px",
         }}
       >
         <ControlButton
