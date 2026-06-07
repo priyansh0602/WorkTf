@@ -10,7 +10,7 @@ import {
   MessageChannel, MessageDirection, MessageStatus,
   ConversationStatus, FollowUpStatus,
 } from "@worktf/shared";
-import { Icon, Card, Badge, Button, Modal } from "@components/ui";
+import { Icon, Badge, Button, Modal } from "@components/ui";
 import ConversationList from "./ConversationList";
 import ConversationView from "./ConversationView";
 import OutreachConfig from "./OutreachConfig";
