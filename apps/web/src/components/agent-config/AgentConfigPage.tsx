@@ -42,9 +42,9 @@ export default function AgentConfigPage() {
   }, [agentName, voiceStyle, goal, capabilities]);
 
   return (
-    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', maxWidth: 720, margin: '0 auto', width: '100%' }}>
+    <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', maxWidth: 840, margin: '0 auto', width: '100%' }}>
       {/* ── Page header ────────────────────────────── */}
-      <div style={{ flexShrink: 0, marginBottom: 28 }}>
+      <div style={{ flexShrink: 0, marginBottom: 16 }}>
         <h1
           style={{
             fontFamily: "'Geist', sans-serif",
@@ -68,43 +68,50 @@ export default function AgentConfigPage() {
         </p>
       </div>
 
-      {/* ── Scrollable Config Content ──────────────── */}
+      {/* ── Config Content (2-Column Grid) ─────────────── */}
       <div
         style={{
           flex: 1,
-          overflowY: 'auto',
-          paddingRight: 4,
           paddingBottom: 24,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 20
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 20,
+          alignItems: 'start'
         }}
       >
-        <IdentitySection
-          agentName={agentName}
-          voiceStyle={voiceStyle}
-          onAgentNameChange={setAgentName}
-          onVoiceStyleChange={setVoiceStyle}
-        />
-        <MissionSection goal={goal} onGoalChange={setGoal} />
-        <CapabilitiesSection
-          inboundEnabled={capabilities.inboundEnabled}
-          outboundEnabled={capabilities.outboundEnabled}
-          voicemailDetection={capabilities.voicemailDetection}
-          callRecording={capabilities.callRecording}
-          onChange={handleCapabilityChange}
-        />
+        {/* Left Column */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <IdentitySection
+            agentName={agentName}
+            voiceStyle={voiceStyle}
+            onAgentNameChange={setAgentName}
+            onVoiceStyleChange={setVoiceStyle}
+          />
+          <MissionSection goal={goal} onGoalChange={setGoal} />
+          
+          {/* ── Save button ────────────────────────────── */}
+          <div style={{ display: "flex", justifyContent: "flex-start", marginTop: 8 }}>
+            <Button
+              variant="primary"
+              size="md"
+              icon="save"
+              onClick={handleSave}
+            >
+              Save Configuration
+            </Button>
+          </div>
+        </div>
 
-        {/* ── Save button ────────────────────────────── */}
-        <Button
-          variant="primary"
-          size="md"
-          icon="save"
-          onClick={handleSave}
-          style={{ width: "fit-content", marginTop: "4px" }}
-        >
-          Save Configuration
-        </Button>
+        {/* Right Column */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <CapabilitiesSection
+            inboundEnabled={capabilities.inboundEnabled}
+            outboundEnabled={capabilities.outboundEnabled}
+            voicemailDetection={capabilities.voicemailDetection}
+            callRecording={capabilities.callRecording}
+            onChange={handleCapabilityChange}
+          />
+        </div>
       </div>
     </div>
   );
