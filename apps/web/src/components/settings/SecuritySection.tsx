@@ -15,7 +15,7 @@ const SECURITY_OPTIONS = [
 
 export default function SecuritySection() {
   return (
-    <Card padding={20}>
+    <Card padding={16}>
       {/* Section title */}
       <div
         style={{
@@ -23,7 +23,7 @@ export default function SecuritySection() {
           fontSize: "15px",
           fontWeight: 600,
           color: "var(--on-surface)",
-          marginBottom: "12px",
+          marginBottom: "8px",
         }}
       >
         Security
@@ -68,7 +68,7 @@ function SecurityRow({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "12px 0",
+        padding: "10px 0",
         borderBottom: isLast ? "none" : "1px solid var(--outline-variant)",
         cursor: "pointer",
         borderRadius: "4px",
