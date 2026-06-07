@@ -44,7 +44,7 @@ export default function NotificationsSection({
   };
 
   return (
-    <Card padding={20}>
+    <Card padding={16}>
       {/* Section title */}
       <div
         style={{
@@ -52,7 +52,7 @@ export default function NotificationsSection({
           fontSize: "15px",
           fontWeight: 600,
           color: "var(--on-surface)",
-          marginBottom: "16px",
+          marginBottom: "12px",
         }}
       >
         Notifications
@@ -63,7 +63,7 @@ export default function NotificationsSection({
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "16px",
+          gap: "12px",
         }}
       >
         {NOTIFICATION_OPTIONS.map((opt) => (
