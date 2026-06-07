@@ -38,7 +38,7 @@ export default function SettingsPage() {
           color: "var(--on-surface)",
           marginTop: 0,
           flexShrink: 0,
-          marginBottom: 28
+          marginBottom: 16
         }}
       >
         Settings
@@ -52,7 +52,7 @@ export default function SettingsPage() {
           paddingBottom: 24,
           display: 'flex',
           flexDirection: 'column',
-          gap: 20
+          gap: 12
         }}
       >
         <ProfileCard />
