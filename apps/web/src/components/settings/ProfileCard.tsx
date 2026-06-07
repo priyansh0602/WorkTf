@@ -29,14 +29,14 @@ export default function ProfileCard({
   onUpgrade,
 }: ProfileCardProps) {
   return (
-    <Card padding={20}>
+    <Card padding={16}>
       {/* ── Top row: avatar + info + edit ───────────── */}
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          marginBottom: "16px",
+          marginBottom: "12px",
         }}
       >
         <div
@@ -91,7 +91,7 @@ export default function ProfileCard({
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "12px",
+          padding: "8px 12px",
           background: "var(--surface-low)",
           borderRadius: "10px",
         }}
