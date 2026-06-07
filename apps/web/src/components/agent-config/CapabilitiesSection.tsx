@@ -55,7 +55,7 @@ export default function CapabilitiesSection({
   };
 
   return (
-    <Card padding={20}>
+    <Card padding={16}>
       {/* ── Section header ─────────────────────────── */}
       <div
         style={{
@@ -63,8 +63,8 @@ export default function CapabilitiesSection({
           alignItems: "center",
           gap: "8px",
           borderBottom: "1px solid var(--surface-container)",
-          paddingBottom: "12px",
-          marginBottom: "16px",
+          paddingBottom: "8px",
+          marginBottom: "12px",
         }}
       >
         <Icon name="settings_suggest" size={20} fill color="var(--primary)" />
@@ -85,7 +85,7 @@ export default function CapabilitiesSection({
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "16px",
+          gap: "12px",
         }}
       >
         {CAPABILITIES.map((cap) => (
