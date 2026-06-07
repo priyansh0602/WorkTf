@@ -28,7 +28,7 @@ export default function IdentitySection({
   onVoiceStyleChange,
 }: IdentitySectionProps) {
   return (
-    <Card padding={20}>
+    <Card padding={16}>
       {/* ── Section header ─────────────────────────── */}
       <div
         style={{
@@ -36,8 +36,8 @@ export default function IdentitySection({
           alignItems: "center",
           gap: "8px",
           borderBottom: "1px solid var(--surface-container)",
-          paddingBottom: "12px",
-          marginBottom: "16px",
+          paddingBottom: "8px",
+          marginBottom: "12px",
         }}
       >
         <Icon name="person" size={20} fill color="var(--primary)" />
@@ -58,7 +58,7 @@ export default function IdentitySection({
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "16px",
+          gap: "12px",
         }}
       >
         <Input
