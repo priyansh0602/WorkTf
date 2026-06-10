@@ -7,11 +7,13 @@
  * the onComplete callback.
  */
 
-import { useState, useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import type { IOnboardingAnswers, IOnboardingOption } from "@worktf/shared";
 import { Button } from "@components/ui";
 import ProgressBar from "./ProgressBar";
 import QuestionCard from "./QuestionCard";
+import { useOnboarding } from "../../hooks/useOnboarding";
+import { useUserStore } from "../../store";
 
 // ─── Question definitions ───────────────────────────────────────────
 
@@ -192,34 +194,52 @@ interface OnboardingFlowProps {
 }
 
 export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<Partial<IOnboardingAnswers>>({});
+  const userStore = useUserStore();
+
+  useEffect(() => {
+    userStore.createUser({
+      clerkId: "test-user-123",
+      email: "test@worktf.ai",
+      firstName: "John",
+      lastName: "Doe",
+    }).catch((err) => {
+      console.error("Failed to create user on mount:", err);
+    });
+  }, []);
+
+  const {
+    currentStep: step,
+    answers,
+    isLastStep,
+    goNext,
+    goBack,
+    selectAnswer,
+    isSubmitting,
+  } = useOnboarding({
+    totalSteps: QUESTIONS.length,
+    onComplete,
+  });
 
   const currentQuestion = QUESTIONS[step];
-  const isLastStep = step === QUESTIONS.length - 1;
   const currentAnswer = (answers as Record<string, string | undefined>)[currentQuestion.id];
 
   /** Go to previous step (minimum 0) */
   const handleBack = useCallback(() => {
-    setStep((s) => Math.max(0, s - 1));
-  }, []);
+    goBack();
+  }, [goBack]);
 
   /** Store the selected value for the current question */
   const handleSelect = useCallback(
     (value: string) => {
-      setAnswers((prev) => ({ ...prev, [currentQuestion.id]: value }));
+      selectAnswer(currentQuestion.id, value);
     },
-    [currentQuestion.id],
+    [currentQuestion.id, selectAnswer],
   );
 
   /** Advance to next step or complete the flow */
   const handleContinue = useCallback(() => {
-    if (isLastStep) {
-      onComplete(answers as IOnboardingAnswers);
-    } else {
-      setStep((s) => s + 1);
-    }
-  }, [isLastStep, answers, onComplete]);
+    goNext();
+  }, [goNext]);
 
   return (
     <div
@@ -274,7 +294,8 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
           size="lg"
           fullWidth
           iconAfter="arrow_forward"
-          disabled={!currentAnswer}
+          disabled={!currentAnswer || isSubmitting}
+          loading={isSubmitting}
           onClick={handleContinue}
           style={{ maxWidth: 480, borderRadius: "999px" }}
         >
