@@ -90,4 +90,21 @@ export interface IAgent {
   enabledChannels?: ChannelType[];
   createdAt: Date;
   updatedAt: Date;
+
+  // Snake-case mappings for backend/database model compatibility
+  user_id?: string;
+  voice_style?: string;
+  use_case?: string;
+  call_volume?: string;
+  audience_type?: string;
+  inbound_enabled?: boolean;
+  outbound_enabled?: boolean;
+  voicemail_detection?: boolean;
+  call_recording?: boolean;
+  vapi_assistant_id?: string;
+  vapi_phone_number_id?: string;
+  is_active?: boolean;
+  enabled_channels?: string[];
+  created_at?: string | Date;
+  updated_at?: string | Date;
 }

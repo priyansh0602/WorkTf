@@ -34,4 +34,15 @@ export interface IUser {
   onboardingCompleted: boolean;
   createdAt: Date;
   updatedAt: Date;
+
+  // Snake-case mappings for backend/database model compatibility
+  clerk_id?: string;
+  first_name?: string;
+  last_name?: string;
+  calls_used?: number;
+  calls_limit?: number;
+  agent_id?: string;
+  onboarding_completed?: boolean;
+  created_at?: string | Date;
+  updated_at?: string | Date;
 }
