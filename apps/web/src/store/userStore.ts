@@ -1,12 +1,6 @@
-/**
- * User Store — Zustand store managing authenticated user data.
- *
- * Tracks the current user profile, authentication state,
- * and loading/error flags for auth operations.
- */
-
 import { create } from "zustand";
 import type { IUser } from "@worktf/shared";
+import { apiClient } from "../lib/api";
 
 // ─── State interface ────────────────────────────────────────────────
 
@@ -25,6 +19,13 @@ interface UserActions {
   setAuthenticated: (value: boolean) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  fetchUser: () => Promise<void>;
+  createUser: (data: {
+    clerkId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+  }) => Promise<void>;
 }
 
 // ─── Store ──────────────────────────────────────────────────────────
@@ -42,4 +43,30 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
   setAuthenticated: (value) => set({ isAuthenticated: value }),
   setLoading: (loading) => set({ isLoading: loading }),
   setError: (error) => set({ error }),
+
+  fetchUser: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const user = await apiClient.get<IUser>("users/me");
+      set({ user, isAuthenticated: true, isLoading: false });
+    } catch (error: any) {
+      set({ user: null, isAuthenticated: false, error: error.message, isLoading: false });
+    }
+  },
+
+  createUser: async (data: {
+    clerkId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+  }) => {
+    set({ isLoading: true, error: null });
+    try {
+      const user = await apiClient.post<IUser>("users", data);
+      set({ user, isAuthenticated: true, isLoading: false });
+    } catch (error: any) {
+      set({ error: error.message || "Failed to create user", isLoading: false });
+      throw error;
+    }
+  },
 }));

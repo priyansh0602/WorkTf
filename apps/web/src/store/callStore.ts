@@ -1,23 +1,22 @@
-/**
- * Call Store — Zustand store managing active call state and call history.
- *
- * Used by dashboard, active call, and call logs pages to share
- * call data across the application.
- */
-
 import { create } from "zustand";
 import type { ICall, IActiveCall } from "@worktf/shared";
+import { apiClient } from "../lib/api";
 
-// ─── State interface ────────────────────────────────────────────────
+interface CallStats {
+  total: number;
+  answered: number;
+  missed: number;
+  converted: number;
+  conversionRate: string;
+}
 
 interface CallState {
   activeCall: IActiveCall | null;
   recentCalls: ICall[];
+  callStats: CallStats | null;
   isLoading: boolean;
   error: string | null;
 }
-
-// ─── Actions interface ──────────────────────────────────────────────
 
 interface CallActions {
   setActiveCall: (call: IActiveCall | null) => void;
@@ -26,14 +25,48 @@ interface CallActions {
   addCall: (call: ICall) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  fetchRecentCalls: () => Promise<void>;
+  fetchCallStats: () => Promise<void>;
+  initiateCall: (contactName: string, contactNumber: string) => Promise<void>;
 }
 
-// ─── Store ──────────────────────────────────────────────────────────
+function mapCall(c: any): ICall {
+  return {
+    id: c.id,
+    agentId: c.agent_id,
+    userId: c.user_id,
+    contactName: c.contact_name,
+    contactNumber: c.contact_number,
+    direction: c.direction,
+    status: c.status,
+    outcome: c.outcome,
+    duration: c.duration,
+    transcript: c.transcript,
+    recordingUrl: c.recording_url,
+    startedAt: c.started_at ? new Date(c.started_at) : undefined,
+    endedAt: c.ended_at ? new Date(c.ended_at) : undefined,
+    createdAt: c.created_at ? new Date(c.created_at) : new Date(),
+    updatedAt: c.updated_at ? new Date(c.updated_at) : new Date(),
+  };
+}
+
+function mapActiveCall(c: any): IActiveCall {
+  return {
+    callId: c.id,
+    contactName: c.contact_name,
+    contactNumber: c.contact_number,
+    direction: c.direction,
+    status: c.status,
+    startedAt: c.started_at ? new Date(c.started_at) : new Date(),
+    durationSeconds: c.duration || 0,
+  };
+}
 
 export const useCallStore = create<CallState & CallActions>((set) => ({
   /* Initial state */
   activeCall: null,
   recentCalls: [],
+  callStats: null,
   isLoading: false,
   error: null,
 
@@ -45,4 +78,39 @@ export const useCallStore = create<CallState & CallActions>((set) => ({
     set((state) => ({ recentCalls: [call, ...state.recentCalls] })),
   setLoading: (loading) => set({ isLoading: loading }),
   setError: (error) => set({ error }),
+
+  fetchRecentCalls: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const result = await apiClient.get<{ calls: any[] }>("calls");
+      const mapped = (result?.calls || []).map(mapCall);
+      set({ recentCalls: mapped, isLoading: false });
+    } catch (error: any) {
+      set({ error: error.message || "Failed to fetch calls", isLoading: false });
+    }
+  },
+
+  fetchCallStats: async () => {
+    try {
+      const stats = await apiClient.get<CallStats>("calls/stats");
+      set({ callStats: stats });
+    } catch (error: any) {
+      console.error("Failed to fetch call stats:", error);
+    }
+  },
+
+  initiateCall: async (contactName: string, contactNumber: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const call = await apiClient.post<any>("calls", {
+        contactName,
+        contactNumber,
+      });
+      const activeCall = mapActiveCall(call);
+      set({ activeCall, isLoading: false });
+    } catch (error: any) {
+      set({ error: error.message || "Failed to initiate call", isLoading: false });
+      throw error;
+    }
+  },
 }));
