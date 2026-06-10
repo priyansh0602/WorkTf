@@ -7,6 +7,7 @@
 
 import { useState, useCallback, useMemo } from "react";
 import type { IOnboardingAnswers } from "@worktf/shared";
+import { apiClient } from "../lib/api";
 
 interface UseOnboardingOptions {
   totalSteps: number;
@@ -30,10 +31,12 @@ interface UseOnboardingReturn {
   goBack: () => void;
   /** Record an answer for a question */
   selectAnswer: (questionId: string, value: string) => void;
+  /** Submission loading state */
+  isSubmitting: boolean;
 }
 
 /** Question IDs in order — used to check if current step is answered. */
-const QUESTION_IDS = ["useCase", "callVolume", "agentTone", "audienceType"];
+const QUESTION_IDS = ["useCase", "callVolume", "agentTone", "audienceType", "channels"];
 
 export function useOnboarding({
   totalSteps,
@@ -41,6 +44,7 @@ export function useOnboarding({
 }: UseOnboardingOptions): UseOnboardingReturn {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Partial<IOnboardingAnswers>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isLastStep = currentStep === totalSteps - 1;
   const progress = ((currentStep + 1) / totalSteps) * 100;
@@ -53,9 +57,23 @@ export function useOnboarding({
   }, [currentStep, answers]);
 
   /** Advance to next step or trigger completion. */
-  const goNext = useCallback(() => {
+  const goNext = useCallback(async () => {
     if (isLastStep) {
-      onComplete(answers as IOnboardingAnswers);
+      setIsSubmitting(true);
+      try {
+        await apiClient.post("users/onboarding", {
+          useCase: answers.useCase,
+          callVolume: answers.callVolume,
+          agentTone: answers.agentTone,
+          audienceType: answers.audienceType,
+          channels: answers.channels,
+        });
+        onComplete(answers as IOnboardingAnswers);
+      } catch (error) {
+        console.error("Onboarding submission failed:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       setCurrentStep((s) => s + 1);
     }
@@ -80,5 +98,6 @@ export function useOnboarding({
     goNext,
     goBack,
     selectAnswer,
+    isSubmitting,
   };
 }
