@@ -60,12 +60,12 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
     firstName: string;
     lastName: string;
   }) => {
-    set({ isLoading: true, error: null });
+    set({ error: null });
     try {
       const user = await apiClient.post<IUser>("users", data);
-      set({ user, isAuthenticated: true, isLoading: false });
+      set({ user, isAuthenticated: true });
     } catch (error: any) {
-      set({ error: error.message || "Failed to create user", isLoading: false });
+      set({ error: error.message || "Failed to create user" });
       throw error;
     }
   },

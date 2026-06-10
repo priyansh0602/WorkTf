@@ -96,6 +96,7 @@ export function AppRouter() {
 
 function AppRoutes() {
   const navigate = useNavigate();
+  const { fetchUser } = useUserStore();
 
   return (
     <Routes>
@@ -108,8 +109,13 @@ function AppRoutes() {
         path="/onboarding"
         element={
           <OnboardingFlow
-            onComplete={(answers) => {
+            onComplete={async (answers) => {
               console.log("Onboarding complete:", answers);
+              try {
+                await fetchUser();
+              } catch (err) {
+                console.error("Failed to refresh user after onboarding:", err);
+              }
               navigate("/dashboard");
             }}
           />
