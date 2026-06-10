@@ -5,11 +5,12 @@
  * with a save button (console.log for now until Phase 10 API).
  */
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Button } from "@components/ui";
 import IdentitySection from "./IdentitySection";
 import MissionSection from "./MissionSection";
 import CapabilitiesSection from "./CapabilitiesSection";
+import { useAgentStore } from "../../store";
 
 interface Capabilities {
   inboundEnabled: boolean;
@@ -31,15 +32,43 @@ export default function AgentConfigPage() {
     callRecording: true,
   });
 
+  const { fetchAgent, saveAgent, agent, isSaving } = useAgentStore();
+
+  useEffect(() => {
+    fetchAgent();
+  }, [fetchAgent]);
+
+  useEffect(() => {
+    if (agent) {
+      setAgentName(agent.name);
+      setVoiceStyle(agent.voice_style || "PROFESSIONAL_MALE");
+      setGoal(agent.goal);
+      setCapabilities({
+        inboundEnabled: !!agent.inbound_enabled,
+        outboundEnabled: !!agent.outbound_enabled,
+        voicemailDetection: !!agent.voicemail_detection,
+        callRecording: !!agent.call_recording,
+      });
+    }
+  }, [agent]);
+
   /** Update a single capability toggle value. */
   const handleCapabilityChange = useCallback((key: string, value: boolean) => {
     setCapabilities((prev) => ({ ...prev, [key]: value }));
   }, []);
 
-  /** Save handler — logs config for now, API in Phase 10. */
+  /** Save handler — calls saveAgent with current form state. */
   const handleSave = useCallback(() => {
-    console.log("Save config:", { agentName, voiceStyle, goal, capabilities });
-  }, [agentName, voiceStyle, goal, capabilities]);
+    saveAgent({
+      name: agentName,
+      voice_style: voiceStyle,
+      goal,
+      inbound_enabled: capabilities.inboundEnabled,
+      outbound_enabled: capabilities.outboundEnabled,
+      voicemail_detection: capabilities.voicemailDetection,
+      call_recording: capabilities.callRecording,
+    });
+  }, [saveAgent, agentName, voiceStyle, goal, capabilities]);
 
   return (
     <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', maxWidth: 840, margin: '0 auto', width: '100%' }}>
@@ -96,6 +125,7 @@ export default function AgentConfigPage() {
               size="md"
               icon="save"
               onClick={handleSave}
+              loading={isSaving}
             >
               Save Configuration
             </Button>
