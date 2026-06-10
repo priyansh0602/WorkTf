@@ -6,87 +6,12 @@
  * Uses mock data for now — real API data comes in Phase 10.
  */
 
-import type { ICall } from "@worktf/shared";
-import { CallDirection, CallStatus, CallOutcome } from "@worktf/shared";
+import { useEffect } from "react";
 import { Button, Card, Icon, Badge } from "@components/ui";
 import AgentStatusCard from "./AgentStatusCard";
 import MetricCard from "./MetricCard";
 import RecentCallsTable from "./RecentCallsTable";
-
-// ─── Mock data (real API data comes in Phase 10) ────────────────────
-
-const MOCK_CALLS: ICall[] = [
-  {
-    id: "1",
-    agentId: "agent1",
-    userId: "user1",
-    contactName: "Sarah Mitchell",
-    contactNumber: "(555) 201-4892",
-    direction: CallDirection.OUTBOUND,
-    status: CallStatus.COMPLETED,
-    outcome: CallOutcome.CONVERTED,
-    duration: 272,
-    startedAt: new Date(Date.now() - 2 * 60 * 1000),
-    createdAt: new Date(Date.now() - 2 * 60 * 1000),
-    updatedAt: new Date(Date.now() - 2 * 60 * 1000),
-  },
-  {
-    id: "2",
-    agentId: "agent1",
-    userId: "user1",
-    contactName: "Tom Kravitz",
-    contactNumber: "(555) 348-2210",
-    direction: CallDirection.OUTBOUND,
-    status: CallStatus.COMPLETED,
-    outcome: CallOutcome.ANSWERED,
-    duration: 138,
-    startedAt: new Date(Date.now() - 15 * 60 * 1000),
-    createdAt: new Date(Date.now() - 15 * 60 * 1000),
-    updatedAt: new Date(Date.now() - 15 * 60 * 1000),
-  },
-  {
-    id: "3",
-    agentId: "agent1",
-    userId: "user1",
-    contactName: "Alex Rodriguez",
-    contactNumber: "(555) 912-7734",
-    direction: CallDirection.OUTBOUND,
-    status: CallStatus.MISSED,
-    outcome: CallOutcome.MISSED,
-    duration: 0,
-    startedAt: new Date(Date.now() - 32 * 60 * 1000),
-    createdAt: new Date(Date.now() - 32 * 60 * 1000),
-    updatedAt: new Date(Date.now() - 32 * 60 * 1000),
-  },
-  {
-    id: "4",
-    agentId: "agent1",
-    userId: "user1",
-    contactName: "Diana Park",
-    contactNumber: "(555) 456-8820",
-    direction: CallDirection.INBOUND,
-    status: CallStatus.COMPLETED,
-    outcome: CallOutcome.CONVERTED,
-    duration: 371,
-    startedAt: new Date(Date.now() - 60 * 60 * 1000),
-    createdAt: new Date(Date.now() - 60 * 60 * 1000),
-    updatedAt: new Date(Date.now() - 60 * 60 * 1000),
-  },
-  {
-    id: "5",
-    agentId: "agent1",
-    userId: "user1",
-    contactName: "Marcus Webb",
-    contactNumber: "(555) 773-0091",
-    direction: CallDirection.OUTBOUND,
-    status: CallStatus.COMPLETED,
-    outcome: CallOutcome.ANSWERED,
-    duration: 105,
-    startedAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    updatedAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
-  },
-];
+import { useCallStore, useAgentStore } from "../../store";
 
 // ─── Channel cards data ─────────────────────────────────────────────
 
@@ -120,6 +45,17 @@ export default function DashboardPage({
   onViewAllCalls,
   onManageAgent,
 }: DashboardPageProps) {
+  const { fetchRecentCalls, fetchCallStats, recentCalls, callStats, isLoading } = useCallStore();
+  const { fetchAgent, agent } = useAgentStore();
+
+  useEffect(() => {
+    fetchRecentCalls();
+    fetchCallStats();
+    fetchAgent();
+  }, [fetchRecentCalls, fetchCallStats, fetchAgent]);
+
+  const activeAgent = agent?.is_active || false;
+
   return (
     <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* ── Page header ────────────────────────────── */}
@@ -165,8 +101,8 @@ export default function DashboardPage({
       <div style={{ flex: 1, overflowY: 'auto', paddingRight: 4 }}>
         {/* ── Agent status ───────────────────────────── */}
         <AgentStatusCard
-          isActive={true}
-          concurrentCalls={3}
+          isActive={activeAgent}
+          concurrentCalls={0}
           onManage={onManageAgent}
         />
 
@@ -181,39 +117,44 @@ export default function DashboardPage({
         >
           <MetricCard
             label="TOTAL CALLS"
-            value="1,284"
+            value={callStats?.total?.toString() || "0"}
             delta="+12% this week"
             icon="call"
             color="var(--primary)"
+            loading={isLoading}
           />
           <MetricCard
             label="LIVE NOW"
-            value="3"
+            value="0"
             delta="Active"
             icon="fiber_manual_record"
             color="#16a34a"
             live
+            loading={isLoading}
           />
           <MetricCard
             label="ANSWERED"
-            value="1,101"
-            delta="85.7% answer rate"
+            value={callStats?.answered?.toString() || "0"}
+            delta={callStats?.total ? `${((callStats.answered / callStats.total) * 100).toFixed(1)}% answer rate` : "0% answer rate"}
             icon="call_received"
             color="var(--primary)"
+            loading={isLoading}
           />
           <MetricCard
             label="MISSED"
-            value="183"
-            delta="14.3% miss rate"
+            value={callStats?.missed?.toString() || "0"}
+            delta={callStats?.total ? `${((callStats.missed / callStats.total) * 100).toFixed(1)}% miss rate` : "0% miss rate"}
             icon="call_missed"
             color="var(--on-error-container)"
+            loading={isLoading}
           />
           <MetricCard
             label="CONVERSION"
-            value="24%"
+            value={callStats?.conversionRate ? callStats.conversionRate + "%" : "0%"}
             delta="+2.4% vs last week"
             icon="trending_up"
             color="#c2410c"
+            loading={isLoading}
           />
         </div>
 
@@ -238,54 +179,57 @@ export default function DashboardPage({
               gap: "12px",
             }}
           >
-            {CHANNELS.map((ch) => (
-              <Card key={ch.label} padding={16}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "8px",
-                  }}
-                >
+            {CHANNELS.map((ch) => {
+              const isChannelActive = agent?.enabled_channels?.includes(ch.label.toUpperCase() as any) || ch.active;
+              return (
+                <Card key={ch.label} padding={16}>
                   <div
                     style={{
                       display: "flex",
+                      justifyContent: "space-between",
                       alignItems: "center",
-                      gap: "8px",
+                      marginBottom: "8px",
                     }}
                   >
-                    <Icon name={ch.icon} size={18} color="var(--on-surface)" />
-                    <span
+                    <div
                       style={{
-                        fontSize: "14px",
-                        fontWeight: 600,
-                        color: "var(--on-surface)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
                       }}
                     >
-                      {ch.label}
-                    </span>
+                      <Icon name={ch.icon} size={18} color="var(--on-surface)" />
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          color: "var(--on-surface)",
+                        }}
+                      >
+                        {ch.label}
+                      </span>
+                    </div>
+                    <Badge
+                      label={isChannelActive ? "Active" : "Inactive"}
+                      color={isChannelActive ? "green" : "gray"}
+                    />
                   </div>
-                  <Badge
-                    label={ch.active ? "Active" : "Inactive"}
-                    color={ch.active ? "green" : "gray"}
-                  />
-                </div>
-                <div
-                  style={{
-                    fontSize: "13px",
-                    color: "var(--on-surface-variant)",
-                  }}
-                >
-                  {ch.stat}
-                </div>
-              </Card>
-            ))}
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      color: "var(--on-surface-variant)",
+                    }}
+                  >
+                    {ch.stat}
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         </div>
 
         {/* ── Recent calls table ─────────────────────── */}
-        <RecentCallsTable calls={MOCK_CALLS} onViewAll={onViewAllCalls} />
+        <RecentCallsTable calls={recentCalls} onViewAll={onViewAllCalls} />
       </div>
     </div>
   );

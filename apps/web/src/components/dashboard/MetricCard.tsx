@@ -24,6 +24,8 @@ interface MetricCardProps {
   color?: string;
   /** When true, shows a green pulsing dot next to the value */
   live?: boolean;
+  /** When true, displays a pulse animation skeleton instead of the value */
+  loading?: boolean;
 }
 
 export default function MetricCard({
@@ -33,6 +35,7 @@ export default function MetricCard({
   icon,
   color = "var(--primary)",
   live = false,
+  loading = false,
 }: MetricCardProps) {
   return (
     <Card padding={20} hoverable>
@@ -65,67 +68,95 @@ export default function MetricCard({
           display: "flex",
           alignItems: "center",
           gap: "8px",
+          minHeight: "36px",
         }}
       >
-        <span
-          style={{
-            fontFamily: "'Geist', sans-serif",
-            fontSize: "30px",
-            fontWeight: 700,
-            color,
-          }}
-        >
-          {value}
-        </span>
-
-        {/* Live pulse indicator */}
-        {live && (
+        {loading ? (
           <div
+            className="animate-pulse"
             style={{
-              position: "relative",
-              width: "12px",
-              height: "12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              width: "80px",
+              height: "30px",
+              background: "var(--surface-container-high)",
+              borderRadius: "4px",
             }}
-          >
-            {/* Pulsing ring */}
-            <div
-              className="animate-pulse-ring"
+          />
+        ) : (
+          <>
+            <span
               style={{
-                position: "absolute",
-                inset: 0,
-                background: "#16a34a",
-                borderRadius: "50%",
-                opacity: 0.6,
+                fontFamily: "'Geist', sans-serif",
+                fontSize: "30px",
+                fontWeight: 700,
+                color,
               }}
-            />
-            {/* Solid dot */}
-            <div
-              style={{
-                position: "relative",
-                width: "8px",
-                height: "8px",
-                background: "#16a34a",
-                borderRadius: "50%",
-              }}
-            />
-          </div>
+            >
+              {value}
+            </span>
+
+            {/* Live pulse indicator */}
+            {live && (
+              <div
+                style={{
+                  position: "relative",
+                  width: "12px",
+                  height: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {/* Pulsing ring */}
+                <div
+                  className="animate-pulse-ring"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: "#16a34a",
+                    borderRadius: "50%",
+                    opacity: 0.6,
+                  }}
+                />
+                {/* Solid dot */}
+                <div
+                  style={{
+                    position: "relative",
+                    width: "8px",
+                    height: "8px",
+                    background: "#16a34a",
+                    borderRadius: "50%",
+                  }}
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
 
       {/* ── Delta text ─────────────────────────────── */}
-      {delta && (
+      {loading ? (
         <div
+          className="animate-pulse"
           style={{
-            fontSize: "12px",
-            color: "var(--on-surface-variant)",
-            marginTop: "4px",
+            width: "120px",
+            height: "14px",
+            background: "var(--surface-container-high)",
+            borderRadius: "4px",
+            marginTop: "8px",
           }}
-        >
-          {delta}
-        </div>
+        />
+      ) : (
+        delta && (
+          <div
+            style={{
+              fontSize: "12px",
+              color: "var(--on-surface-variant)",
+              marginTop: "4px",
+            }}
+          >
+            {delta}
+          </div>
+        )
       )}
     </Card>
   );
