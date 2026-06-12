@@ -7,9 +7,17 @@ import { errorHandler } from './middleware';
 
 const app = express();
 
+const allowedOrigins = [config.clientUrl, 'http://localhost:8081'];
+
 app.use(
   cors({
-    origin: config.clientUrl,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
