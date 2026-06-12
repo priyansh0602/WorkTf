@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "WorkTF Mobile",
+    "slug": "worktf-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light"
+  }
+}
