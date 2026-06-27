@@ -13,8 +13,8 @@ const allowedOrigins = [
   config.clientUrl
 ]
 
-app.use(cors({
-  origin: function(origin, callback) {
+const corsOptions = {
+  origin: function(origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true)
     } else {
@@ -28,9 +28,10 @@ app.use(cors({
     'Authorization', 
     'x-clerk-user-id'
   ]
-}))
+}
 
-app.options('*', cors())
+app.use(cors(corsOptions))
+app.options('*', cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
