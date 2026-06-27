@@ -14,6 +14,7 @@ import ProgressBar from "./ProgressBar";
 import QuestionCard from "./QuestionCard";
 import { useOnboarding } from "../../hooks/useOnboarding";
 import { useUserStore } from "../../store";
+import { getClerkId } from "../../lib/api";
 
 // ─── Question definitions ───────────────────────────────────────────
 
@@ -198,8 +199,8 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
   useEffect(() => {
     userStore.createUser({
-      clerkId: "test-user-123",
-      email: "test@worktf.ai",
+      clerkId: getClerkId(),
+      email: `${getClerkId()}@worktf.ai`,
       firstName: "John",
       lastName: "Doe",
     }).catch((err) => {

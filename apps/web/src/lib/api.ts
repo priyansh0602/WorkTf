@@ -1,6 +1,14 @@
 export const API_URL = (import.meta as any).env?.VITE_API_URL || "http://localhost:8080";
 
-export const DEFAULT_CLERK_ID = "test-user-123";
+export function getClerkId(): string {
+  if (typeof window === "undefined") return "test-user-123";
+  let clerkId = sessionStorage.getItem("worktf_clerk_id");
+  if (!clerkId) {
+    clerkId = `test-user-${Math.random().toString(36).substring(2, 11)}`;
+    sessionStorage.setItem("worktf_clerk_id", clerkId);
+  }
+  return clerkId;
+}
 
 async function handleResponse<T = unknown>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -28,7 +36,7 @@ export const apiClient = {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "x-clerk-user-id": clerkId || DEFAULT_CLERK_ID,
+          "x-clerk-user-id": clerkId || getClerkId(),
         },
       });
       return await handleResponse<T>(response);
@@ -44,7 +52,7 @@ export const apiClient = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-clerk-user-id": clerkId || DEFAULT_CLERK_ID,
+          "x-clerk-user-id": clerkId || getClerkId(),
         },
         body: JSON.stringify(data),
       });
@@ -61,7 +69,7 @@ export const apiClient = {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          "x-clerk-user-id": clerkId || DEFAULT_CLERK_ID,
+          "x-clerk-user-id": clerkId || getClerkId(),
         },
         body: JSON.stringify(data),
       });
@@ -78,7 +86,7 @@ export const apiClient = {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "x-clerk-user-id": clerkId || DEFAULT_CLERK_ID,
+          "x-clerk-user-id": clerkId || getClerkId(),
         },
       });
       return await handleResponse<T>(response);

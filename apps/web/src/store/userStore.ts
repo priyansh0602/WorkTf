@@ -44,6 +44,7 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
   setUser: (user) => set({ user, isAuthenticated: user !== null }),
   clearUser: () => {
     sessionStorage.removeItem('worktf_session');
+    sessionStorage.removeItem('worktf_clerk_id');
     set({ user: null, isAuthenticated: false, hasSession: false });
   },
   setAuthenticated: (value) => set({ isAuthenticated: value }),
