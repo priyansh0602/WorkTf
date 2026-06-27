@@ -5,8 +5,10 @@
  * ACTIVITY (Call Logs/Agent Config/Settings).
  */
 
+import { useNavigate } from "react-router-dom";
 import { Button, Avatar } from "../ui";
 import Icon from "../ui/Icon";
+import { useUserStore } from "@store/userStore";
 
 interface SidebarProps {
   activePage: string;
@@ -44,6 +46,14 @@ const SIDEBAR_ENTRIES: SidebarEntry[] = [
 ];
 
 export default function Sidebar({ activePage, onNavigate, onNewCampaign }: SidebarProps) {
+  const { clearUser, user } = useUserStore();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    clearUser();
+    navigate('/');
+  }
+
   return (
     <div style={{
       width: "280px",
@@ -179,13 +189,13 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
         padding: "0 16px 16px",
         flexShrink: 0,
       }}>
-        <Avatar size="md" firstName="John" lastName="Doe" />
+        <Avatar size="md" firstName={user?.firstName ?? 'U'} lastName={user?.lastName ?? ''} />
         <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
           <span style={{
             fontSize: "14px",
             fontWeight: 600,
             color: "var(--on-surface)",
-          }}>John Doe</span>
+          }}>{user?.firstName ? `${user.firstName} ${user.lastName ?? ''}`.trim() : 'User'}</span>
           <span style={{
             fontSize: "12px",
             color: "var(--on-surface-variant)",
@@ -193,7 +203,7 @@ export default function Sidebar({ activePage, onNavigate, onNewCampaign }: Sideb
         </div>
         <button
           type="button"
-          onClick={() => console.log("Sign out")}
+          onClick={handleLogout}
           style={{
             background: "transparent",
             border: "none",
