@@ -28,7 +28,7 @@ export const config: AppConfig = {
   port: parseInt(process.env.PORT || '8080', 10),
   supabaseUrl: requireEnv('SUPABASE_URL'),
   supabaseAnonKey: requireEnv('SUPABASE_ANON_KEY'),
-  supabaseServiceKey: requireEnv('SUPABASE_SERVICE_ROLE_KEY'),
+  supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY || requireEnv('SUPABASE_SERVICE_KEY'),
   groqApiKey: requireEnv('GROQ_API_KEY'),
   vapiApiKey: requireEnv('VAPI_API_KEY'),
   vapiPhoneNumberId: requireEnv('VAPI_PHONE_NUMBER_ID'),
