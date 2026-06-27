@@ -7,20 +7,30 @@ import { errorHandler } from './middleware';
 
 const app = express();
 
-const allowedOrigins = [config.clientUrl, 'http://localhost:8081'];
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://work-tf-web.vercel.app',
+  config.clientUrl
+]
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'x-clerk-user-id'
+  ]
+}))
+
+app.options('*', cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
