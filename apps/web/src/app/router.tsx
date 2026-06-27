@@ -33,28 +33,32 @@ import { useUserStore } from "../store";
 // ─── Init App wrapper ───────────────────────────────────────────────
 
 function InitApp({ children }: { children: React.ReactNode }) {
-  const { user, fetchUser, isLoading } = useUserStore();
+  const { user, fetchUser, isLoading, hasSession } = useUserStore();
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Only fetch user if there's an active session (user clicked Get Started before)
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    if (hasSession) {
+      fetchUser();
+    }
+  }, [hasSession, fetchUser]);
 
   useEffect(() => {
     if (isLoading) return;
+    if (!hasSession) return; // No session → stay on landing
     if (user) {
       if (!user.onboarding_completed) {
         if (location.pathname !== "/onboarding") {
           navigate("/onboarding");
         }
       } else {
-        if (location.pathname === "/") {
+        if (location.pathname === "/" || location.pathname === "/onboarding") {
           navigate("/dashboard");
         }
       }
     }
-  }, [user, isLoading, location.pathname, navigate]);
+  }, [user, isLoading, hasSession, location.pathname, navigate]);
 
   if (isLoading) {
     return (
@@ -96,14 +100,17 @@ export function AppRouter() {
 
 function AppRoutes() {
   const navigate = useNavigate();
-  const { fetchUser } = useUserStore();
+  const { fetchUser, startSession } = useUserStore();
 
   return (
     <Routes>
       {/* ── Public routes ──────────────────────────── */}
       <Route
         path="/"
-        element={<LandingPage onGetStarted={() => navigate("/onboarding")} />}
+        element={<LandingPage onGetStarted={() => {
+          startSession();
+          navigate("/onboarding");
+        }} />}
       />
       <Route
         path="/onboarding"
@@ -111,6 +118,7 @@ function AppRoutes() {
           <OnboardingFlow
             onComplete={async (answers) => {
               console.log("Onboarding complete:", answers);
+              startSession();
               try {
                 await fetchUser();
               } catch (err) {

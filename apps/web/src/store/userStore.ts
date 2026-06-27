@@ -8,6 +8,7 @@ interface UserState {
   user: IUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  hasSession: boolean;
   error: string | null;
 }
 
@@ -19,6 +20,7 @@ interface UserActions {
   setAuthenticated: (value: boolean) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  startSession: () => void;
   fetchUser: () => Promise<void>;
   createUser: (data: {
     clerkId: string;
@@ -35,14 +37,22 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
   user: null,
   isAuthenticated: false,
   isLoading: false,
+  hasSession: typeof window !== 'undefined' && !!sessionStorage.getItem('worktf_session'),
   error: null,
 
   /* Actions */
   setUser: (user) => set({ user, isAuthenticated: user !== null }),
-  clearUser: () => set({ user: null, isAuthenticated: false }),
+  clearUser: () => {
+    sessionStorage.removeItem('worktf_session');
+    set({ user: null, isAuthenticated: false, hasSession: false });
+  },
   setAuthenticated: (value) => set({ isAuthenticated: value }),
   setLoading: (loading) => set({ isLoading: loading }),
   setError: (error) => set({ error }),
+  startSession: () => {
+    sessionStorage.setItem('worktf_session', '1');
+    set({ hasSession: true });
+  },
 
   fetchUser: async () => {
     set({ isLoading: true, error: null });
