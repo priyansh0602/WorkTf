@@ -61,7 +61,9 @@ export const useUserStore = create<UserState & UserActions>((set) => ({
       const user = await apiClient.get<IUser>("users/me");
       set({ user, isAuthenticated: true, isLoading: false });
     } catch (error: any) {
-      set({ user: null, isAuthenticated: false, error: error.message, isLoading: false });
+      sessionStorage.removeItem('worktf_session');
+      sessionStorage.removeItem('worktf_clerk_id');
+      set({ user: null, isAuthenticated: false, hasSession: false, error: error.message, isLoading: false });
     }
   },
 

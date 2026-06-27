@@ -46,7 +46,12 @@ function InitApp({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isLoading) return;
-    if (!hasSession) return; // No session → stay on landing
+    if (!hasSession) {
+      if (location.pathname.startsWith("/dashboard") || location.pathname === "/onboarding") {
+        navigate("/");
+      }
+      return;
+    }
     if (user) {
       if (!user.onboarding_completed) {
         if (location.pathname !== "/onboarding") {
